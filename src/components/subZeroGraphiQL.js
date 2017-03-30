@@ -1,42 +1,10 @@
+/* eslint-disable */
 import React, { PropTypes } from 'react';
 import { GraphiQL } from './GraphiQL';
 export class subZeroGraphiQL extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      // REQUIRED:
-      // `fetcher` must be provided in order for GraphiQL to operate
-      //fetcher: this.props.fetcher,
-      //fetcher: this._fetcher,
-
-      // OPTIONAL PARAMETERS
-      // GraphQL artifacts
-      // query: '',
-      // variables: '',
-      // response: '',
-
-      // GraphQL Schema
-      // If `undefined` is provided, an introspection query is executed
-      // using the fetcher.
-      // schema: undefined,
-
-
-      // Useful to determine which operation to run
-      // when there are multiple of them.
-      // operationName: null,
-      // storage: null,
-      // defaultQuery: null,
-
-      // Custom Event Handlers
-      // onEditQuery: null,
-      // onEditVariables: null,
-      // onEditOperationName: null,
-
-      // GraphiQL automatically fills in leaf nodes when the query
-      // does not provide them. Change this if your GraphQL Definitions
-      // should behave differently than what's defined here:
-      // (https://github.com/graphql/graphiql/blob/master/src/utility/fillLeafs.js#L75)
-      // getDefaultFieldNames: null
       auth_token: null
     };
     this._onAuthTokenChange = this._onAuthTokenChange.bind(this)

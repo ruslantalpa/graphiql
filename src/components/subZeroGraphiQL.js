@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { GraphiQL } from './GraphiQL';
-export class Sub0GraphiQL extends React.Component {
+export class subZeroGraphiQL extends React.Component {
   constructor(props) {
     super();
     this.state = {

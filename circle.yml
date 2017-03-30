@@ -1,0 +1,14 @@
+dependencies:
+  pre:
+    - npm install
+
+test:
+  override:
+    - npm test
+
+deployment:
+    prod:
+      branch: master
+      commands:
+        - npm run build
+

@@ -37,9 +37,10 @@
       copy them directly into your environment, or perhaps include them in your
       favored resource bundler.
      -->
-    <link rel="stylesheet" href="./node_modules/graphiql/graphiql.css" />
-    <script src="./node_modules/graphiql/graphiql.js"></script>
-
+    <link rel="stylesheet" href="./graphiql.css" />
+    <script src="./sub0graphiql.min.js"></script>
+    <link rel="livePage" href="/lastupdate.txt" />
+  
   </head>
   <body>
     <div id="graphiql">Loading...</div>
@@ -57,6 +58,8 @@
       // Parse the search string to get url parameters.
       var search = window.location.search;
       var parameters = {};
+      var schemaLocation = window.location.origin + '/sub0/graphql/schema.json';
+      var endpointLocation = window.location.origin + '/graphql/';
       search.substr(1).split('&').forEach(function (entry) {
         var eq = entry.indexOf('=');
         if (eq >= 0) {
@@ -107,25 +110,47 @@
       // use fetch, and could instead implement graphQLFetcher however you like,
       // as long as it returns a Promise or Observable.
       function graphQLFetcher(graphQLParams) {
-        // This example expects a GraphQL server at the path /graphql.
-        // Change this to point wherever you host your GraphQL server.
-        return fetch('/graphql', {
-          method: 'post',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(graphQLParams),
-          credentials: 'include',
-        }).then(function (response) {
-          return response.text();
-        }).then(function (responseBody) {
-          try {
-            return JSON.parse(responseBody);
-          } catch (error) {
-            return responseBody;
+        if(graphQLParams.query.indexOf('IntrospectionQuery') !== -1) {
+          return fetch(schemaLocation, {
+            method: 'get',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+          }).then(function (response) {
+            return response.text();
+          }).then(function (responseBody) {
+            try {
+              return JSON.parse(responseBody);
+            } catch (error) {
+              return responseBody;
+            }
+          });
+        }
+        else {
+          var headers = {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            }
+          if(graphQLParams.auth_token){
+            headers['Authorization'] = 'Bearer ' + graphQLParams.auth_token
           }
-        });
+          return fetch(endpointLocation, {
+            method: 'post',
+            headers: headers,
+            body: JSON.stringify(graphQLParams),
+            credentials: 'include',
+          }).then(function (response) {
+            return response.text();
+          }).then(function (responseBody) {
+            try {
+              return JSON.parse(responseBody);
+            } catch (error) {
+              return responseBody;
+            }
+          });
+        }
       }
 
       // Render <GraphiQL /> into the body.
@@ -133,7 +158,7 @@
       // how you can customize GraphiQL by providing different values or
       // additional child elements.
       ReactDOM.render(
-        React.createElement(GraphiQL, {
+        React.createElement(Sub0GraphiQL, {
           fetcher: graphQLFetcher,
           query: parameters.query,
           variables: parameters.variables,

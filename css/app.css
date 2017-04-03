@@ -1,5 +1,6 @@
 .graphiql-container,
 .graphiql-container button,
+.graphiql-container select,
 .graphiql-container input {
   color: #141823;
   font-family:
@@ -145,6 +146,10 @@
   flex-direction: column;
   height: 29px;
   position: relative;
+}
+
+.graphiql-container .auth-token {
+  margin-left: 10px;
 }
 
 .graphiql-container .variable-editor-title {

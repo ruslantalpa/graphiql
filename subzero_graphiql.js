@@ -3721,9 +3721,10 @@ var subZeroGraphiQL = exports.subZeroGraphiQL = function (_React$Component) {
 
     _this.state = {
       auth_token: null,
-      schema_type: 'simple'
+      schema_type: props.schema_type
     };
     _this._onAuthTokenChange = _this._onAuthTokenChange.bind(_this);
+    _this._onSchemaTypeChange = _this._onSchemaTypeChange.bind(_this);
     _this._fetcher = _this._fetcher.bind(_this);
     return _this;
   }
@@ -3732,6 +3733,7 @@ var subZeroGraphiQL = exports.subZeroGraphiQL = function (_React$Component) {
     key: '_fetcher',
     value: function _fetcher(graphQLParams) {
       graphQLParams.auth_token = this.state.auth_token;
+      graphQLParams.schema_type = this.state.schema_type;
       return this.props.fetcher(graphQLParams);
     }
   }, {
@@ -3743,7 +3745,9 @@ var subZeroGraphiQL = exports.subZeroGraphiQL = function (_React$Component) {
     key: '_onSchemaTypeChange',
     value: function _onSchemaTypeChange(e) {
       this.setState({ schema_type: e.target.value });
-      this._fetchSchema();
+      if (this.props.onSchemaTypeChange) {
+        this.props.onSchemaTypeChange(e.target.value);
+      }
     }
   }, {
     key: 'render',
@@ -3777,7 +3781,7 @@ var subZeroGraphiQL = exports.subZeroGraphiQL = function (_React$Component) {
               'Relay Schema'
             )
           ),
-          _react2.default.createElement('input', { onChange: this._onAuthTokenChange, value: this.state.auth_token, placeholder: 'JWT value' })
+          _react2.default.createElement('input', { className: 'auth-token', onChange: this._onAuthTokenChange, value: this.state.auth_token, placeholder: 'JWT value' })
         )
       );
     }

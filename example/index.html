@@ -94,6 +94,13 @@
         updateURL();
       }
 
+      function onSchemaTypeChange(schemaType) {
+        console.log(schemaType)
+        parameters.schemaType = schemaType;
+        updateURL();
+        location.reload();
+      }
+
       function updateURL() {
         var newSearch = '?' + Object.keys(parameters).filter(function (key) {
           return Boolean(parameters[key]);
@@ -110,7 +117,7 @@
       function graphQLFetcher(graphQLParams) {
         // This example expects a GraphQL server at the path /graphql.
         // Change this to point wherever you host your GraphQL server.
-        return fetch('/graphql', {
+        return fetch('/graphql/' + graphQLParams.schema_type, {
           method: 'post',
           headers: {
             'Accept': 'application/json',
@@ -136,13 +143,15 @@
       // additional child elements.
       ReactDOM.render(
         React.createElement(subZeroGraphiQL, {
+          schema_type: parameters.schemaType || 'simple',
           fetcher: graphQLFetcher,
           query: parameters.query,
           variables: parameters.variables,
           operationName: parameters.operationName,
           onEditQuery: onEditQuery,
           onEditVariables: onEditVariables,
-          onEditOperationName: onEditOperationName
+          onEditOperationName: onEditOperationName,
+          onSchemaTypeChange: onSchemaTypeChange
         }),
         document.getElementById('graphiql')
       );

@@ -21,6 +21,9 @@ echo "Bundling subzero_graphiql.css..."
 postcss --use autoprefixer -d dist/ css/*.css
 cat dist/*.css > subzero_graphiql.css
 
+
+git pull
+
 # stage any changes and new files
 git add -A
 # now commit, ignoring branch gh-pages doesn't seem to work, so trying skip

@@ -6,14 +6,16 @@ export class subZeroGraphiQL extends React.Component {
     super();
     this.state = {
       auth_token: null,
-      schema_type: 'simple'
+      schema_type: props.schema_type
     };
     this._onAuthTokenChange = this._onAuthTokenChange.bind(this)
+    this._onSchemaTypeChange = this._onSchemaTypeChange.bind(this)
     this._fetcher = this._fetcher.bind(this)
   }
 
   _fetcher(graphQLParams) {
     graphQLParams.auth_token = this.state.auth_token
+    graphQLParams.schema_type = this.state.schema_type
     return this.props.fetcher(graphQLParams)
   }
 
@@ -22,7 +24,9 @@ export class subZeroGraphiQL extends React.Component {
   }
   _onSchemaTypeChange(e) {
     this.setState({schema_type: e.target.value});
-    this._fetchSchema();
+    if (this.props.onSchemaTypeChange) {
+      this.props.onSchemaTypeChange(e.target.value);
+    }
   }
 
   render() {
@@ -42,7 +46,7 @@ export class subZeroGraphiQL extends React.Component {
             <option value="simple">Simple Schema</option>
             <option value="relay">Relay Schema</option>
           </select>
-          <input onChange={this._onAuthTokenChange} value={this.state.auth_token} placeholder="JWT value" />
+          <input className="auth-token" onChange={this._onAuthTokenChange} value={this.state.auth_token} placeholder="JWT value" />
         </GraphiQL.Toolbar>
       </GraphiQL>
     );

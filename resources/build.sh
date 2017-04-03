@@ -22,7 +22,6 @@ postcss --use autoprefixer -d dist/ css/*.css
 cat dist/*.css > subzero_graphiql.css
 
 
-git pull
 
 # stage any changes and new files
 git add -A

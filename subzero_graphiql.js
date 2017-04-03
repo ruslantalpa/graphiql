@@ -3708,7 +3708,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* eslint-disable */
+
 
 var subZeroGraphiQL = exports.subZeroGraphiQL = function (_React$Component) {
   _inherits(subZeroGraphiQL, _React$Component);
@@ -3719,40 +3720,8 @@ var subZeroGraphiQL = exports.subZeroGraphiQL = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (subZeroGraphiQL.__proto__ || Object.getPrototypeOf(subZeroGraphiQL)).call(this));
 
     _this.state = {
-      // REQUIRED:
-      // `fetcher` must be provided in order for GraphiQL to operate
-      //fetcher: this.props.fetcher,
-      //fetcher: this._fetcher,
-
-      // OPTIONAL PARAMETERS
-      // GraphQL artifacts
-      // query: '',
-      // variables: '',
-      // response: '',
-
-      // GraphQL Schema
-      // If `undefined` is provided, an introspection query is executed
-      // using the fetcher.
-      // schema: undefined,
-
-
-      // Useful to determine which operation to run
-      // when there are multiple of them.
-      // operationName: null,
-      // storage: null,
-      // defaultQuery: null,
-
-      // Custom Event Handlers
-      // onEditQuery: null,
-      // onEditVariables: null,
-      // onEditOperationName: null,
-
-      // GraphiQL automatically fills in leaf nodes when the query
-      // does not provide them. Change this if your GraphQL Definitions
-      // should behave differently than what's defined here:
-      // (https://github.com/graphql/graphiql/blob/master/src/utility/fillLeafs.js#L75)
-      // getDefaultFieldNames: null
-      auth_token: null
+      auth_token: null,
+      schema_type: 'simple'
     };
     _this._onAuthTokenChange = _this._onAuthTokenChange.bind(_this);
     _this._fetcher = _this._fetcher.bind(_this);
@@ -3769,6 +3738,12 @@ var subZeroGraphiQL = exports.subZeroGraphiQL = function (_React$Component) {
     key: '_onAuthTokenChange',
     value: function _onAuthTokenChange(e) {
       this.setState({ auth_token: e.target.value });
+    }
+  }, {
+    key: '_onSchemaTypeChange',
+    value: function _onSchemaTypeChange(e) {
+      this.setState({ schema_type: e.target.value });
+      this._fetchSchema();
     }
   }, {
     key: 'render',
@@ -3788,6 +3763,20 @@ var subZeroGraphiQL = exports.subZeroGraphiQL = function (_React$Component) {
         _react2.default.createElement(
           _GraphiQL.GraphiQL.Toolbar,
           null,
+          _react2.default.createElement(
+            'select',
+            { onChange: this._onSchemaTypeChange, value: this.state.schema_type },
+            _react2.default.createElement(
+              'option',
+              { value: 'simple' },
+              'Simple Schema'
+            ),
+            _react2.default.createElement(
+              'option',
+              { value: 'relay' },
+              'Relay Schema'
+            )
+          ),
           _react2.default.createElement('input', { onChange: this._onAuthTokenChange, value: this.state.auth_token, placeholder: 'JWT value' })
         )
       );

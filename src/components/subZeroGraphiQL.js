@@ -5,7 +5,8 @@ export class subZeroGraphiQL extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      auth_token: null
+      auth_token: null,
+      schema_type: 'simple'
     };
     this._onAuthTokenChange = this._onAuthTokenChange.bind(this)
     this._fetcher = this._fetcher.bind(this)
@@ -18,6 +19,10 @@ export class subZeroGraphiQL extends React.Component {
 
   _onAuthTokenChange(e) {
     this.setState({auth_token: e.target.value});
+  }
+  _onSchemaTypeChange(e) {
+    this.setState({schema_type: e.target.value});
+    this._fetchSchema();
   }
 
   render() {
@@ -33,6 +38,10 @@ export class subZeroGraphiQL extends React.Component {
         onEditOperationName={this.props.onEditOperationName}
         onToggleDocs={this.props.onToggleDocs}>
         <GraphiQL.Toolbar>
+          <select onChange={this._onSchemaTypeChange} value={this.state.schema_type}>
+            <option value="simple">Simple Schema</option>
+            <option value="relay">Relay Schema</option>
+          </select>
           <input onChange={this._onAuthTokenChange} value={this.state.auth_token} placeholder="JWT value" />
         </GraphiQL.Toolbar>
       </GraphiQL>

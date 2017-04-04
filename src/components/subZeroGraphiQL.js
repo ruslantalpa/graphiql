@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import { GraphiQL } from './GraphiQL';
 export class subZeroGraphiQL extends React.Component {
   constructor(props) {
-    super();
+    super(props);
     this.state = {
       auth_token: null,
       schema_type: props.schema_type
@@ -39,7 +39,8 @@ export class subZeroGraphiQL extends React.Component {
 
   render() {
     return (
-      <GraphiQL 
+      <GraphiQL
+        ref={c => { this.graphiql = c; }}
         state={this.state} 
         fetcher={this._fetcher}
         query={this.props.query}

@@ -3717,7 +3717,7 @@ var subZeroGraphiQL = exports.subZeroGraphiQL = function (_React$Component) {
   function subZeroGraphiQL(props) {
     _classCallCheck(this, subZeroGraphiQL);
 
-    var _this = _possibleConstructorReturn(this, (subZeroGraphiQL.__proto__ || Object.getPrototypeOf(subZeroGraphiQL)).call(this));
+    var _this = _possibleConstructorReturn(this, (subZeroGraphiQL.__proto__ || Object.getPrototypeOf(subZeroGraphiQL)).call(this, props));
 
     _this.state = {
       auth_token: null,
@@ -3765,9 +3765,14 @@ var subZeroGraphiQL = exports.subZeroGraphiQL = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       return _react2.default.createElement(
         _GraphiQL.GraphiQL,
         {
+          ref: function ref(c) {
+            _this2.graphiql = c;
+          },
           state: this.state,
           fetcher: this._fetcher,
           query: this.props.query,

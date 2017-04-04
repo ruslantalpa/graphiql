@@ -29,6 +29,14 @@ export class subZeroGraphiQL extends React.Component {
     }
   }
 
+  handleClickPrettifyButton(event) {
+    const editor = this.graphiql.getQueryEditor();
+    const currentText = editor.getValue();
+    const { parse, print } = require('graphql');
+    const prettyText = print(parse(currentText));
+    editor.setValue(prettyText);
+  }
+
   render() {
     return (
       <GraphiQL 
@@ -42,6 +50,11 @@ export class subZeroGraphiQL extends React.Component {
         onEditOperationName={this.props.onEditOperationName}
         onToggleDocs={this.props.onToggleDocs}>
         <GraphiQL.Toolbar>
+          <GraphiQL.Button
+            onClick={this.handleClickPrettifyButton}
+            label="Prettify"
+            title="Prettify Query"
+          />
           <select onChange={this._onSchemaTypeChange} value={this.state.schema_type}>
             <option value="simple">Simple Schema</option>
             <option value="relay">Relay Schema</option>

@@ -6131,7 +6131,7 @@ function getDefinitionState(tokenState) {
 
   return definitionState;
 }
-},{"./Rules":42,"./forEachState":44,"./getTypeInfo":46,"./hintList":47,"./objectValues":51,"./runParser":53,"graphql":79,"graphql/type/introspection":99}],46:[function(require,module,exports){
+},{"./Rules":42,"./forEachState":44,"./getTypeInfo":46,"./hintList":47,"./objectValues":51,"./runParser":53,"graphql":79,"graphql/type/introspection":100}],46:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -6271,7 +6271,7 @@ function find(array, predicate) {
     }
   }
 }
-},{"./forEachState":44,"graphql":79,"graphql/type/introspection":99}],47:[function(require,module,exports){
+},{"./forEachState":44,"graphql":79,"graphql/type/introspection":100}],47:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21066,7 +21066,7 @@ function getFieldDef(schema, parentType, fieldName) {
   }
   return parentType.getFields()[fieldName];
 }
-},{"../error":72,"../jsutils/find":80,"../jsutils/invariant":81,"../jsutils/isNullish":83,"../language/kinds":89,"../type/definition":96,"../type/directives":97,"../type/introspection":99,"../type/schema":101,"../utilities/typeFromAST":119,"./values":77,"iterall":149}],76:[function(require,module,exports){
+},{"../error":72,"../jsutils/find":80,"../jsutils/invariant":81,"../jsutils/isNullish":83,"../language/kinds":89,"../type/definition":97,"../type/directives":98,"../type/introspection":100,"../type/schema":102,"../utilities/typeFromAST":120,"./values":77,"iterall":96}],76:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21330,7 +21330,7 @@ function coerceValue(type, value) {
 
   return parsed;
 }
-},{"../error":72,"../jsutils/invariant":81,"../jsutils/isInvalid":82,"../jsutils/isNullish":83,"../jsutils/keyMap":84,"../language/kinds":89,"../language/printer":93,"../type/definition":96,"../utilities/isValidJSValue":114,"../utilities/isValidLiteralValue":115,"../utilities/typeFromAST":119,"../utilities/valueFromAST":120,"iterall":149}],78:[function(require,module,exports){
+},{"../error":72,"../jsutils/invariant":81,"../jsutils/isInvalid":82,"../jsutils/isNullish":83,"../jsutils/keyMap":84,"../language/kinds":89,"../language/printer":93,"../type/definition":97,"../utilities/isValidJSValue":115,"../utilities/isValidLiteralValue":116,"../utilities/typeFromAST":120,"../utilities/valueFromAST":121,"iterall":96}],78:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21394,7 +21394,7 @@ function graphql(schema, requestString, rootValue, contextValue, variableValues,
     return { errors: [error] };
   });
 }
-},{"./execution/execute":75,"./language/parser":92,"./language/source":94,"./validation/validate":148}],79:[function(require,module,exports){
+},{"./execution/execute":75,"./language/parser":92,"./language/source":94,"./validation/validate":149}],79:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21973,7 +21973,7 @@ Object.defineProperty(exports, 'findDeprecatedUsages', {
     return _utilities.findDeprecatedUsages;
   }
 });
-},{"./error":72,"./execution":76,"./graphql":78,"./language":88,"./type":98,"./utilities":112,"./validation":121}],80:[function(require,module,exports){
+},{"./error":72,"./execution":76,"./graphql":78,"./language":88,"./type":99,"./utilities":113,"./validation":122}],80:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -24713,6 +24713,367 @@ function getVisitFn(visitor, kind, isLeaving) {
   }
 }
 },{}],96:[function(require,module,exports){
+/**
+ * Copyright (c) 2016, Lee Byron
+ * All rights reserved.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
+ * @ignore
+ */
+
+/**
+ * [Iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterator)
+ * is a *protocol* which describes a standard way to produce a sequence of
+ * values, typically the values of the Iterable represented by this Iterator.
+ *
+ * While described by the [ES2015 version of JavaScript](http://www.ecma-international.org/ecma-262/6.0/#sec-iterator-interface)
+ * it can be utilized by any version of JavaScript.
+ *
+ * @typedef {Object} Iterator
+ * @template T The type of each iterated value
+ * @property {function (): { value: T, done: boolean }} next
+ *   A method which produces either the next value in a sequence or a result
+ *   where the `done` property is `true` indicating the end of the Iterator.
+ */
+
+/**
+ * [Iterable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterable)
+ * is a *protocol* which when implemented allows a JavaScript object to define
+ * their iteration behavior, such as what values are looped over in a `for..of`
+ * loop or `iterall`'s `forEach` function. Many [built-in types](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#Builtin_iterables)
+ * implement the Iterable protocol, including `Array` and `Map`.
+ *
+ * While described by the [ES2015 version of JavaScript](http://www.ecma-international.org/ecma-262/6.0/#sec-iterable-interface)
+ * it can be utilized by any version of JavaScript.
+ *
+ * @typedef {Object} Iterable
+ * @template T The type of each iterated value
+ * @property {function (): Iterator<T>} Symbol.iterator
+ *   A method which produces an Iterator for this Iterable.
+ */
+
+// In ES2015 (or a polyfilled) environment, this will be Symbol.iterator
+var SYMBOL_ITERATOR = typeof Symbol === 'function' && Symbol.iterator
+
+/**
+ * A property name to be used as the name of an Iterable's method responsible
+ * for producing an Iterator, referred to as `@@iterator`. Typically represents
+ * the value `Symbol.iterator` but falls back to the string `"@@iterator"` when
+ * `Symbol.iterator` is not defined.
+ *
+ * Use `$$iterator` for defining new Iterables instead of `Symbol.iterator`,
+ * but do not use it for accessing existing Iterables, instead use
+ * `getIterator()` or `isIterable()`.
+ *
+ * @example
+ *
+ * var $$iterator = require('iterall').$$iterator
+ *
+ * function Counter (to) {
+ *   this.to = to
+ * }
+ *
+ * Counter.prototype[$$iterator] = function () {
+ *   return {
+ *     to: this.to,
+ *     num: 0,
+ *     next () {
+ *       if (this.num >= this.to) {
+ *         return { value: undefined, done: true }
+ *       }
+ *       return { value: this.num++, done: false }
+ *     }
+ *   }
+ * }
+ *
+ * var counter = new Counter(3)
+ * for (var number of counter) {
+ *   console.log(number) // 0 ... 1 ... 2
+ * }
+ *
+ * @type {Symbol|string}
+ */
+var $$iterator = SYMBOL_ITERATOR || '@@iterator'
+exports.$$iterator = $$iterator
+
+/**
+ * Returns true if the provided object implements the Iterator protocol via
+ * either implementing a `Symbol.iterator` or `"@@iterator"` method.
+ *
+ * @example
+ *
+ * var isIterable = require('iterall').isIterable
+ * isIterable([ 1, 2, 3 ]) // true
+ * isIterable('ABC') // true
+ * isIterable({ length: 1, 0: 'Alpha' }) // false
+ * isIterable({ key: 'value' }) // false
+ * isIterable(new Map()) // true
+ *
+ * @param obj
+ *   A value which might implement the Iterable protocol.
+ * @return {boolean} true if Iterable.
+ */
+function isIterable (obj) {
+  return !!getIteratorMethod(obj)
+}
+exports.isIterable = isIterable
+
+/**
+ * Returns true if the provided object implements the Array-like protocol via
+ * defining a positive-integer `length` property.
+ *
+ * @example
+ *
+ * var isArrayLike = require('iterall').isArrayLike
+ * isArrayLike([ 1, 2, 3 ]) // true
+ * isArrayLike('ABC') // true
+ * isArrayLike({ length: 1, 0: 'Alpha' }) // true
+ * isArrayLike({ key: 'value' }) // false
+ * isArrayLike(new Map()) // false
+ *
+ * @param obj
+ *   A value which might implement the Array-like protocol.
+ * @return {boolean} true if Array-like.
+ */
+function isArrayLike (obj) {
+  var length = obj != null && obj.length
+  return typeof length === 'number' && length >= 0 && length % 1 === 0
+}
+exports.isArrayLike = isArrayLike
+
+/**
+ * Returns true if the provided object is an Object (i.e. not a string literal)
+ * and is either Iterable or Array-like.
+ *
+ * This may be used in place of [Array.isArray()][isArray] to determine if an
+ * object should be iterated-over. It always excludes string literals and
+ * includes Arrays (regardless of if it is Iterable). It also includes other
+ * Array-like objects such as NodeList, TypedArray, and Buffer.
+ *
+ * @example
+ *
+ * var isCollection = require('iterall').isCollection
+ * isCollection([ 1, 2, 3 ]) // true
+ * isCollection('ABC') // false
+ * isCollection({ length: 1, 0: 'Alpha' }) // true
+ * isCollection({ key: 'value' }) // false
+ * isCollection(new Map()) // true
+ *
+ * @example
+ *
+ * var forEach = require('iterall').forEach
+ * if (isCollection(obj)) {
+ *   forEach(obj, function (value) {
+ *     console.log(value)
+ *   })
+ * }
+ *
+ * @param obj
+ *   An Object value which might implement the Iterable or Array-like protocols.
+ * @return {boolean} true if Iterable or Array-like Object.
+ */
+function isCollection (obj) {
+  return Object(obj) === obj && (isArrayLike(obj) || isIterable(obj))
+}
+exports.isCollection = isCollection
+
+/**
+ * If the provided object implements the Iterator protocol, its Iterator object
+ * is returned. Otherwise returns undefined.
+ *
+ * @example
+ *
+ * var getIterator = require('iterall').getIterator
+ * var iterator = getIterator([ 1, 2, 3 ])
+ * iterator.next() // { value: 1, done: false }
+ * iterator.next() // { value: 2, done: false }
+ * iterator.next() // { value: 3, done: false }
+ * iterator.next() // { value: undefined, done: true }
+ *
+ * @template T the type of each iterated value
+ * @param {Iterable<T>} iterable
+ *   An Iterable object which is the source of an Iterator.
+ * @return {Iterator<T>} new Iterator instance.
+ */
+function getIterator (iterable) {
+  var method = getIteratorMethod(iterable)
+  if (method) {
+    return method.call(iterable)
+  }
+}
+exports.getIterator = getIterator
+
+/**
+ * If the provided object implements the Iterator protocol, the method
+ * responsible for producing its Iterator object is returned.
+ *
+ * This is used in rare cases for performance tuning. This method must be called
+ * with obj as the contextual this-argument.
+ *
+ * @example
+ *
+ * var getIteratorMethod = require('iterall').getIteratorMethod
+ * var myArray = [ 1, 2, 3 ]
+ * var method = getIteratorMethod(myArray)
+ * if (method) {
+ *   var iterator = method.call(myArray)
+ * }
+ *
+ * @template T the type of each iterated value
+ * @param {Iterable<T>} iterable
+ *   An Iterable object which defines an `@@iterator` method.
+ * @return {function(): Iterator<T>} `@@iterator` method.
+ */
+function getIteratorMethod (iterable) {
+  if (iterable != null) {
+    var method = SYMBOL_ITERATOR && iterable[SYMBOL_ITERATOR] || iterable['@@iterator']
+    if (typeof method === 'function') {
+      return method
+    }
+  }
+}
+exports.getIteratorMethod = getIteratorMethod
+
+/**
+ * Given an object which either implements the Iterable protocol or is
+ * Array-like, iterate over it, calling the `callback` at each iteration.
+ *
+ * Use `forEach` where you would expect to use a `for ... of` loop in ES6.
+ * However `forEach` adheres to the behavior of [Array#forEach][] described in
+ * the ECMAScript specification, skipping over "holes" in Array-likes. It will
+ * also delegate to a `forEach` method on `collection` if one is defined,
+ * ensuring native performance for `Arrays`.
+ *
+ * Similar to [Array#forEach][], the `callback` function accepts three
+ * arguments, and is provided with `thisArg` as the calling context.
+ *
+ * Note: providing an infinite Iterator to forEach will produce an error.
+ *
+ * [Array#forEach]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
+ *
+ * @example
+ *
+ * var forEach = require('iterall').forEach
+ *
+ * forEach(myIterable, function (value, index, iterable) {
+ *   console.log(value, index, iterable === myIterable)
+ * })
+ *
+ * @example
+ *
+ * // ES6:
+ * for (let value of myIterable) {
+ *   console.log(value)
+ * }
+ *
+ * // Any JavaScript environment:
+ * forEach(myIterable, function (value) {
+ *   console.log(value)
+ * })
+ *
+ * @template T the type of each iterated value
+ * @param {Iterable<T>|{ length: number }} collection
+ *   The Iterable or array to iterate over.
+ * @param {function(T, number, object)} callback
+ *   Function to execute for each iteration, taking up to three arguments
+ * @param [thisArg]
+ *   Optional. Value to use as `this` when executing `callback`.
+ */
+function forEach (collection, callback, thisArg) {
+  if (collection != null) {
+    if (typeof collection.forEach === 'function') {
+      return collection.forEach(callback, thisArg)
+    }
+    var i = 0
+    var iterator = getIterator(collection)
+    if (iterator) {
+      var step
+      while (!(step = iterator.next()).done) {
+        callback.call(thisArg, step.value, i++, collection)
+        // Infinite Iterators could cause forEach to run forever.
+        // After a very large number of iterations, produce an error.
+        /* istanbul ignore if */
+        if (i > 9999999) {
+          throw new TypeError('Near-infinite iteration.')
+        }
+      }
+    } else if (isArrayLike(collection)) {
+      for (; i < collection.length; i++) {
+        if (collection.hasOwnProperty(i)) {
+          callback.call(thisArg, collection[i], i, collection)
+        }
+      }
+    }
+  }
+}
+exports.forEach = forEach
+
+/**
+ * Similar to `getIterator()`, this method returns a new Iterator given an
+ * Iterable. However it will also create an Iterator for a non-Iterable
+ * Array-like collection, such as Array in a non-ES2015 environment.
+ *
+ * `createIterator` is complimentary to `forEach`, but allows a "pull"-based
+ * iteration as opposed to `forEach`'s "push"-based iteration.
+ *
+ * `createIterator` produces an Iterator for Array-likes with the same behavior
+ * as ArrayIteratorPrototype described in the ECMAScript specification, and
+ * does *not* skip over "holes".
+ *
+ * @example
+ *
+ * var createIterator = require('iterall').createIterator
+ *
+ * var myArraylike = { length: 3, 0: 'Alpha', 1: 'Bravo', 2: 'Charlie' }
+ * var iterator = createIterator(myArraylike)
+ * iterator.next() // { value: 'Alpha', done: false }
+ * iterator.next() // { value: 'Bravo', done: false }
+ * iterator.next() // { value: 'Charlie', done: false }
+ * iterator.next() // { value: undefined, done: true }
+ *
+ * @template T the type of each iterated value
+ * @param {Iterable<T>|{ length: number }} collection
+ *   An Iterable or Array-like object to produce an Iterator.
+ * @return {Iterator<T>} new Iterator instance.
+ */
+function createIterator (collection) {
+  if (collection != null) {
+    var iterator = getIterator(collection)
+    if (iterator) {
+      return iterator
+    }
+    if (isArrayLike(collection)) {
+      return new ArrayLikeIterator(collection)
+    }
+  }
+}
+exports.createIterator = createIterator
+
+// When the object provided to `createIterator` is not Iterable but is
+// Array-like, this simple Iterator is created.
+function ArrayLikeIterator (obj) {
+  this._o = obj
+  this._i = 0
+}
+
+// Note: all Iterators are themselves Iterable.
+ArrayLikeIterator.prototype[$$iterator] = function () {
+  return this
+}
+
+// A simple state-machine determines the IteratorResult returned, yielding
+// each value in the Array-like object in order of their indicies.
+ArrayLikeIterator.prototype.next = function () {
+  if (this._o === void 0 || this._i >= this._o.length) {
+    this._o = void 0
+    return { value: void 0, done: true }
+  }
+  return { value: this._o[this._i++], done: false }
+}
+
+},{}],97:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25465,7 +25826,7 @@ var GraphQLNonNull = exports.GraphQLNonNull = function () {
 
 
 GraphQLNonNull.prototype.toJSON = GraphQLNonNull.prototype.inspect = GraphQLNonNull.prototype.toString;
-},{"../jsutils/invariant":81,"../jsutils/isNullish":83,"../language/kinds":89,"../utilities/assertValidName":103}],97:[function(require,module,exports){
+},{"../jsutils/invariant":81,"../jsutils/isNullish":83,"../language/kinds":89,"../utilities/assertValidName":104}],98:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25608,7 +25969,7 @@ var GraphQLDeprecatedDirective = exports.GraphQLDeprecatedDirective = new GraphQ
  * The full list of specified directives.
  */
 var specifiedDirectives = exports.specifiedDirectives = [GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective];
-},{"../jsutils/invariant":81,"../utilities/assertValidName":103,"./definition":96,"./scalars":100}],98:[function(require,module,exports){
+},{"../jsutils/invariant":81,"../utilities/assertValidName":104,"./definition":97,"./scalars":101}],99:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25923,7 +26284,7 @@ Object.defineProperty(exports, 'TypeNameMetaFieldDef', {
     return _introspection.TypeNameMetaFieldDef;
   }
 });
-},{"./definition":96,"./directives":97,"./introspection":99,"./scalars":100,"./schema":101}],99:[function(require,module,exports){
+},{"./definition":97,"./directives":98,"./introspection":100,"./scalars":101,"./schema":102}],100:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26395,7 +26756,7 @@ var TypeNameMetaFieldDef = exports.TypeNameMetaFieldDef = {
     return parentType.name;
   }
 };
-},{"../jsutils/isInvalid":82,"../language/printer":93,"../utilities/astFromValue":104,"./definition":96,"./directives":97,"./scalars":100}],100:[function(require,module,exports){
+},{"../jsutils/isInvalid":82,"../language/printer":93,"../utilities/astFromValue":105,"./definition":97,"./directives":98,"./scalars":101}],101:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26506,7 +26867,7 @@ var GraphQLID = exports.GraphQLID = new _definition.GraphQLScalarType({
     return ast.kind === Kind.STRING || ast.kind === Kind.INT ? ast.value : null;
   }
 });
-},{"../language/kinds":89,"./definition":96}],101:[function(require,module,exports){
+},{"../language/kinds":89,"./definition":97}],102:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26784,7 +27145,7 @@ function assertObjectImplementsInterface(schema, object, iface) {
     });
   });
 }
-},{"../jsutils/find":80,"../jsutils/invariant":81,"../utilities/typeComparators":118,"./definition":96,"./directives":97,"./introspection":99}],102:[function(require,module,exports){
+},{"../jsutils/find":80,"../jsutils/invariant":81,"../utilities/typeComparators":119,"./definition":97,"./directives":98,"./introspection":100}],103:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27020,7 +27381,7 @@ function getFieldDef(schema, parentType, fieldNode) {
     return parentType.getFields()[name];
   }
 }
-},{"../jsutils/find":80,"../language/kinds":89,"../type/definition":96,"../type/introspection":99,"./typeFromAST":119}],103:[function(require,module,exports){
+},{"../jsutils/find":80,"../language/kinds":89,"../type/definition":97,"../type/introspection":100,"./typeFromAST":120}],104:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27081,7 +27442,7 @@ function formatWarning(error) {
   }
   return formatted.trim();
 }
-},{}],104:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27261,7 +27622,7 @@ function astFromValue(value, type) {
  *  LICENSE file in the root directory of this source tree. An additional grant
  *  of patent rights can be found in the PATENTS file in the same directory.
  */
-},{"../jsutils/invariant":81,"../jsutils/isInvalid":82,"../jsutils/isNullish":83,"../language/kinds":89,"../type/definition":96,"../type/scalars":100,"iterall":149}],105:[function(require,module,exports){
+},{"../jsutils/invariant":81,"../jsutils/isInvalid":82,"../jsutils/isNullish":83,"../language/kinds":89,"../type/definition":97,"../type/scalars":101,"iterall":96}],106:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27744,7 +28105,7 @@ function leadingSpaces(str) {
 function cannotExecuteSchema() {
   throw new Error('Generated Schema cannot use Interface or Union types for execution.');
 }
-},{"../execution/values":77,"../jsutils/find":80,"../jsutils/invariant":81,"../jsutils/keyValMap":85,"../language/kinds":89,"../language/lexer":90,"../language/parser":92,"../type/definition":96,"../type/directives":97,"../type/introspection":99,"../type/scalars":100,"../type/schema":101,"./valueFromAST":120}],106:[function(require,module,exports){
+},{"../execution/values":77,"../jsutils/find":80,"../jsutils/invariant":81,"../jsutils/keyValMap":85,"../language/kinds":89,"../language/lexer":90,"../language/parser":92,"../type/definition":97,"../type/directives":98,"../type/introspection":100,"../type/scalars":101,"../type/schema":102,"./valueFromAST":121}],107:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28054,7 +28415,7 @@ function buildClientSchema(introspection) {
 function cannotExecuteClientSchema() {
   throw new Error('Client Schema cannot use Interface or Union types for execution.');
 }
-},{"../jsutils/invariant":81,"../jsutils/keyMap":84,"../jsutils/keyValMap":85,"../language/parser":92,"../type/definition":96,"../type/directives":97,"../type/introspection":99,"../type/scalars":100,"../type/schema":101,"./valueFromAST":120}],107:[function(require,module,exports){
+},{"../jsutils/invariant":81,"../jsutils/keyMap":84,"../jsutils/keyValMap":85,"../language/parser":92,"../type/definition":97,"../type/directives":98,"../type/introspection":100,"../type/scalars":101,"../type/schema":102,"./valueFromAST":121}],108:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28089,7 +28450,7 @@ function concatAST(asts) {
  *  LICENSE file in the root directory of this source tree. An additional grant
  *  of patent rights can be found in the PATENTS file in the same directory.
  */
-},{}],108:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28624,7 +28985,7 @@ function extendSchema(schema, documentAST) {
 function cannotExecuteExtendedSchema() {
   throw new Error('Extended Schema cannot use Interface or Union types for execution.');
 }
-},{"../error/GraphQLError":70,"../jsutils/invariant":81,"../jsutils/keyMap":84,"../jsutils/keyValMap":85,"../language/kinds":89,"../type/definition":96,"../type/directives":97,"../type/introspection":99,"../type/scalars":100,"../type/schema":101,"./buildASTSchema":105,"./valueFromAST":120}],109:[function(require,module,exports){
+},{"../error/GraphQLError":70,"../jsutils/invariant":81,"../jsutils/keyMap":84,"../jsutils/keyValMap":85,"../language/kinds":89,"../type/definition":97,"../type/directives":98,"../type/introspection":100,"../type/scalars":101,"../type/schema":102,"./buildASTSchema":106,"./valueFromAST":121}],110:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28920,7 +29281,7 @@ function findValuesRemovedFromEnums(oldSchema, newSchema) {
   });
   return valuesRemovedFromEnums;
 }
-},{"../type/definition":96,"../type/schema":101}],110:[function(require,module,exports){
+},{"../type/definition":97,"../type/schema":102}],111:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28980,7 +29341,7 @@ function findDeprecatedUsages(schema, ast) {
  *  LICENSE file in the root directory of this source tree. An additional grant
  *  of patent rights can be found in the PATENTS file in the same directory.
  */
-},{"../error/GraphQLError":70,"../language/visitor":95,"../type/definition":96,"../type/schema":101,"./TypeInfo":102}],111:[function(require,module,exports){
+},{"../error/GraphQLError":70,"../language/visitor":95,"../type/definition":97,"../type/schema":102,"./TypeInfo":103}],112:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29023,7 +29384,7 @@ function getOperationAST(documentAST, operationName) {
  *  LICENSE file in the root directory of this source tree. An additional grant
  *  of patent rights can be found in the PATENTS file in the same directory.
  */
-},{"../language/kinds":89}],112:[function(require,module,exports){
+},{"../language/kinds":89}],113:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29221,7 +29582,7 @@ Object.defineProperty(exports, 'findDeprecatedUsages', {
     return _findDeprecatedUsages.findDeprecatedUsages;
   }
 });
-},{"./TypeInfo":102,"./assertValidName":103,"./astFromValue":104,"./buildASTSchema":105,"./buildClientSchema":106,"./concatAST":107,"./extendSchema":108,"./findBreakingChanges":109,"./findDeprecatedUsages":110,"./getOperationAST":111,"./introspectionQuery":113,"./isValidJSValue":114,"./isValidLiteralValue":115,"./schemaPrinter":116,"./separateOperations":117,"./typeComparators":118,"./typeFromAST":119,"./valueFromAST":120}],113:[function(require,module,exports){
+},{"./TypeInfo":103,"./assertValidName":104,"./astFromValue":105,"./buildASTSchema":106,"./buildClientSchema":107,"./concatAST":108,"./extendSchema":109,"./findBreakingChanges":110,"./findDeprecatedUsages":111,"./getOperationAST":112,"./introspectionQuery":114,"./isValidJSValue":115,"./isValidLiteralValue":116,"./schemaPrinter":117,"./separateOperations":118,"./typeComparators":119,"./typeFromAST":120,"./valueFromAST":121}],114:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29236,7 +29597,7 @@ var introspectionQuery = exports.introspectionQuery = '\n  query IntrospectionQu
  *  LICENSE file in the root directory of this source tree. An additional grant
  *  of patent rights can be found in the PATENTS file in the same directory.
  */
-},{}],114:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29365,7 +29726,7 @@ function isValidJSValue(value, type) {
 
   return [];
 }
-},{"../jsutils/invariant":81,"../jsutils/isNullish":83,"../type/definition":96,"iterall":149}],115:[function(require,module,exports){
+},{"../jsutils/invariant":81,"../jsutils/isNullish":83,"../type/definition":97,"iterall":96}],116:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29501,7 +29862,7 @@ function isValidLiteralValue(type, valueNode) {
 
   return [];
 }
-},{"../jsutils/invariant":81,"../jsutils/isNullish":83,"../jsutils/keyMap":84,"../language/kinds":89,"../language/printer":93,"../type/definition":96}],116:[function(require,module,exports){
+},{"../jsutils/invariant":81,"../jsutils/isNullish":83,"../jsutils/keyMap":84,"../language/kinds":89,"../language/printer":93,"../type/definition":97}],117:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29786,7 +30147,7 @@ function breakLine(line, len) {
   }
   return sublines;
 }
-},{"../jsutils/invariant":81,"../jsutils/isInvalid":82,"../jsutils/isNullish":83,"../language/printer":93,"../type/definition":96,"../type/directives":97,"../type/scalars":100,"../utilities/astFromValue":104}],117:[function(require,module,exports){
+},{"../jsutils/invariant":81,"../jsutils/isInvalid":82,"../jsutils/isNullish":83,"../language/printer":93,"../type/definition":97,"../type/directives":98,"../type/scalars":101,"../utilities/astFromValue":105}],118:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29882,7 +30243,7 @@ function collectTransitiveDependencies(collected, depGraph, fromName) {
     });
   }
 }
-},{"../language/visitor":95}],118:[function(require,module,exports){
+},{"../language/visitor":95}],119:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30007,7 +30368,7 @@ function doTypesOverlap(schema, typeA, typeB) {
   // Otherwise the types do not overlap.
   return false;
 }
-},{"../type/definition":96}],119:[function(require,module,exports){
+},{"../type/definition":97}],120:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30046,7 +30407,7 @@ function typeFromAST(schema, typeNode) {
  *  LICENSE file in the root directory of this source tree. An additional grant
  *  of patent rights can be found in the PATENTS file in the same directory.
  */
-},{"../jsutils/invariant":81,"../language/kinds":89,"../type/definition":96}],120:[function(require,module,exports){
+},{"../jsutils/invariant":81,"../language/kinds":89,"../type/definition":97}],121:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30219,7 +30580,7 @@ function valueFromAST(valueNode, type, variables) {
 function isMissingVariable(valueNode, variables) {
   return valueNode.kind === Kind.VARIABLE && (!variables || (0, _isInvalid2.default)(variables[valueNode.name.value]));
 }
-},{"../jsutils/invariant":81,"../jsutils/isInvalid":82,"../jsutils/isNullish":83,"../jsutils/keyMap":84,"../language/kinds":89,"../type/definition":96}],121:[function(require,module,exports){
+},{"../jsutils/invariant":81,"../jsutils/isInvalid":82,"../jsutils/isNullish":83,"../jsutils/keyMap":84,"../language/kinds":89,"../type/definition":97}],122:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30249,7 +30610,7 @@ Object.defineProperty(exports, 'specifiedRules', {
     return _specifiedRules.specifiedRules;
   }
 });
-},{"./specifiedRules":147,"./validate":148}],122:[function(require,module,exports){
+},{"./specifiedRules":148,"./validate":149}],123:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30298,7 +30659,7 @@ function ArgumentsOfCorrectType(context) {
     }
   };
 }
-},{"../../error":72,"../../language/printer":93,"../../utilities/isValidLiteralValue":115}],123:[function(require,module,exports){
+},{"../../error":72,"../../language/printer":93,"../../utilities/isValidLiteralValue":116}],124:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30365,7 +30726,7 @@ function DefaultValuesOfCorrectType(context) {
     }
   };
 }
-},{"../../error":72,"../../language/printer":93,"../../type/definition":96,"../../utilities/isValidLiteralValue":115}],124:[function(require,module,exports){
+},{"../../error":72,"../../language/printer":93,"../../type/definition":97,"../../utilities/isValidLiteralValue":116}],125:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30494,7 +30855,7 @@ function getSuggestedFieldNames(schema, type, fieldName) {
   // Otherwise, must be a Union type, which does not define fields.
   return [];
 }
-},{"../../error":72,"../../jsutils/quotedOrList":86,"../../jsutils/suggestionList":87,"../../type/definition":96}],125:[function(require,module,exports){
+},{"../../error":72,"../../jsutils/quotedOrList":86,"../../jsutils/suggestionList":87,"../../type/definition":97}],126:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30553,7 +30914,7 @@ function FragmentsOnCompositeTypes(context) {
     }
   };
 }
-},{"../../error":72,"../../language/printer":93,"../../type/definition":96,"../../utilities/typeFromAST":119}],126:[function(require,module,exports){
+},{"../../error":72,"../../language/printer":93,"../../type/definition":97,"../../utilities/typeFromAST":120}],127:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30649,7 +31010,7 @@ function KnownArgumentNames(context) {
     }
   };
 }
-},{"../../error":72,"../../jsutils/find":80,"../../jsutils/invariant":81,"../../jsutils/quotedOrList":86,"../../jsutils/suggestionList":87,"../../language/kinds":89}],127:[function(require,module,exports){
+},{"../../error":72,"../../jsutils/find":80,"../../jsutils/invariant":81,"../../jsutils/quotedOrList":86,"../../jsutils/suggestionList":87,"../../language/kinds":89}],128:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30757,7 +31118,7 @@ function getDirectiveLocationForASTPath(ancestors) {
       return parentNode.kind === _kinds.INPUT_OBJECT_TYPE_DEFINITION ? _directives.DirectiveLocation.INPUT_FIELD_DEFINITION : _directives.DirectiveLocation.ARGUMENT_DEFINITION;
   }
 }
-},{"../../error":72,"../../jsutils/find":80,"../../language/kinds":89,"../../type/directives":97}],128:[function(require,module,exports){
+},{"../../error":72,"../../jsutils/find":80,"../../language/kinds":89,"../../type/directives":98}],129:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30798,7 +31159,7 @@ function KnownFragmentNames(context) {
     }
   };
 }
-},{"../../error":72}],129:[function(require,module,exports){
+},{"../../error":72}],130:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30869,7 +31230,7 @@ function KnownTypeNames(context) {
     }
   };
 }
-},{"../../error":72,"../../jsutils/quotedOrList":86,"../../jsutils/suggestionList":87}],130:[function(require,module,exports){
+},{"../../error":72,"../../jsutils/quotedOrList":86,"../../jsutils/suggestionList":87}],131:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30917,7 +31278,7 @@ function LoneAnonymousOperation(context) {
     }
   };
 }
-},{"../../error":72,"../../language/kinds":89}],131:[function(require,module,exports){
+},{"../../error":72,"../../language/kinds":89}],132:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31004,7 +31365,7 @@ function NoFragmentCycles(context) {
     spreadPathIndexByName[fragmentName] = undefined;
   }
 }
-},{"../../error":72}],132:[function(require,module,exports){
+},{"../../error":72}],133:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31060,7 +31421,7 @@ function NoUndefinedVariables(context) {
     }
   };
 }
-},{"../../error":72}],133:[function(require,module,exports){
+},{"../../error":72}],134:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31123,7 +31484,7 @@ function NoUnusedFragments(context) {
     }
   };
 }
-},{"../../error":72}],134:[function(require,module,exports){
+},{"../../error":72}],135:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31185,7 +31546,7 @@ function NoUnusedVariables(context) {
     }
   };
 }
-},{"../../error":72}],135:[function(require,module,exports){
+},{"../../error":72}],136:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31739,7 +32100,7 @@ function _pairSetAdd(data, a, b, areMutuallyExclusive) {
   }
   map[b] = areMutuallyExclusive;
 }
-},{"../../error":72,"../../jsutils/find":80,"../../language/kinds":89,"../../language/printer":93,"../../type/definition":96,"../../utilities/typeFromAST":119}],136:[function(require,module,exports){
+},{"../../error":72,"../../jsutils/find":80,"../../language/kinds":89,"../../language/printer":93,"../../type/definition":97,"../../utilities/typeFromAST":120}],137:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31803,7 +32164,7 @@ function getFragmentType(context, name) {
   var frag = context.getFragment(name);
   return frag && (0, _typeFromAST.typeFromAST)(context.getSchema(), frag.typeCondition);
 }
-},{"../../error":72,"../../utilities/typeComparators":118,"../../utilities/typeFromAST":119}],137:[function(require,module,exports){
+},{"../../error":72,"../../utilities/typeComparators":119,"../../utilities/typeFromAST":120}],138:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31891,7 +32252,7 @@ function ProvidedNonNullArguments(context) {
     }
   };
 }
-},{"../../error":72,"../../jsutils/keyMap":84,"../../type/definition":96}],138:[function(require,module,exports){
+},{"../../error":72,"../../jsutils/keyMap":84,"../../type/definition":97}],139:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31943,7 +32304,7 @@ function ScalarLeafs(context) {
     }
   };
 }
-},{"../../error":72,"../../type/definition":96}],139:[function(require,module,exports){
+},{"../../error":72,"../../type/definition":97}],140:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31993,7 +32354,7 @@ function UniqueArgumentNames(context) {
     }
   };
 }
-},{"../../error":72}],140:[function(require,module,exports){
+},{"../../error":72}],141:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32045,7 +32406,7 @@ function UniqueDirectivesPerLocation(context) {
     }
   };
 }
-},{"../../error":72}],141:[function(require,module,exports){
+},{"../../error":72}],142:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32091,7 +32452,7 @@ function UniqueFragmentNames(context) {
     }
   };
 }
-},{"../../error":72}],142:[function(require,module,exports){
+},{"../../error":72}],143:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32146,7 +32507,7 @@ function UniqueInputFieldNames(context) {
     }
   };
 }
-},{"../../error":72}],143:[function(require,module,exports){
+},{"../../error":72}],144:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32195,7 +32556,7 @@ function UniqueOperationNames(context) {
     }
   };
 }
-},{"../../error":72}],144:[function(require,module,exports){
+},{"../../error":72}],145:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32241,7 +32602,7 @@ function UniqueVariableNames(context) {
     }
   };
 }
-},{"../../error":72}],145:[function(require,module,exports){
+},{"../../error":72}],146:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32291,7 +32652,7 @@ function VariablesAreInputTypes(context) {
     }
   };
 }
-},{"../../error":72,"../../language/printer":93,"../../type/definition":96,"../../utilities/typeFromAST":119}],146:[function(require,module,exports){
+},{"../../error":72,"../../language/printer":93,"../../type/definition":97,"../../utilities/typeFromAST":120}],147:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32367,7 +32728,7 @@ function VariablesInAllowedPosition(context) {
 function effectiveType(varType, varDef) {
   return !varDef.defaultValue || varType instanceof _definition.GraphQLNonNull ? varType : new _definition.GraphQLNonNull(varType);
 }
-},{"../../error":72,"../../type/definition":96,"../../utilities/typeComparators":118,"../../utilities/typeFromAST":119}],147:[function(require,module,exports){
+},{"../../error":72,"../../type/definition":97,"../../utilities/typeComparators":119,"../../utilities/typeFromAST":120}],148:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32511,7 +32872,7 @@ var specifiedRules = exports.specifiedRules = [_UniqueOperationNames.UniqueOpera
  */
 
 // Spec Section: "Operation Name Uniqueness"
-},{"./rules/ArgumentsOfCorrectType":122,"./rules/DefaultValuesOfCorrectType":123,"./rules/FieldsOnCorrectType":124,"./rules/FragmentsOnCompositeTypes":125,"./rules/KnownArgumentNames":126,"./rules/KnownDirectives":127,"./rules/KnownFragmentNames":128,"./rules/KnownTypeNames":129,"./rules/LoneAnonymousOperation":130,"./rules/NoFragmentCycles":131,"./rules/NoUndefinedVariables":132,"./rules/NoUnusedFragments":133,"./rules/NoUnusedVariables":134,"./rules/OverlappingFieldsCanBeMerged":135,"./rules/PossibleFragmentSpreads":136,"./rules/ProvidedNonNullArguments":137,"./rules/ScalarLeafs":138,"./rules/UniqueArgumentNames":139,"./rules/UniqueDirectivesPerLocation":140,"./rules/UniqueFragmentNames":141,"./rules/UniqueInputFieldNames":142,"./rules/UniqueOperationNames":143,"./rules/UniqueVariableNames":144,"./rules/VariablesAreInputTypes":145,"./rules/VariablesInAllowedPosition":146}],148:[function(require,module,exports){
+},{"./rules/ArgumentsOfCorrectType":123,"./rules/DefaultValuesOfCorrectType":124,"./rules/FieldsOnCorrectType":125,"./rules/FragmentsOnCompositeTypes":126,"./rules/KnownArgumentNames":127,"./rules/KnownDirectives":128,"./rules/KnownFragmentNames":129,"./rules/KnownTypeNames":130,"./rules/LoneAnonymousOperation":131,"./rules/NoFragmentCycles":132,"./rules/NoUndefinedVariables":133,"./rules/NoUnusedFragments":134,"./rules/NoUnusedVariables":135,"./rules/OverlappingFieldsCanBeMerged":136,"./rules/PossibleFragmentSpreads":137,"./rules/ProvidedNonNullArguments":138,"./rules/ScalarLeafs":139,"./rules/UniqueArgumentNames":140,"./rules/UniqueDirectivesPerLocation":141,"./rules/UniqueFragmentNames":142,"./rules/UniqueInputFieldNames":143,"./rules/UniqueOperationNames":144,"./rules/UniqueVariableNames":145,"./rules/VariablesAreInputTypes":146,"./rules/VariablesInAllowedPosition":147}],149:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32747,368 +33108,7 @@ var ValidationContext = exports.ValidationContext = function () {
 
   return ValidationContext;
 }();
-},{"../error":72,"../jsutils/invariant":81,"../language/kinds":89,"../language/visitor":95,"../type/schema":101,"../utilities/TypeInfo":102,"./specifiedRules":147}],149:[function(require,module,exports){
-/**
- * Copyright (c) 2016, Lee Byron
- * All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @ignore
- */
-
-/**
- * [Iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterator)
- * is a *protocol* which describes a standard way to produce a sequence of
- * values, typically the values of the Iterable represented by this Iterator.
- *
- * While described by the [ES2015 version of JavaScript](http://www.ecma-international.org/ecma-262/6.0/#sec-iterator-interface)
- * it can be utilized by any version of JavaScript.
- *
- * @typedef {Object} Iterator
- * @template T The type of each iterated value
- * @property {function (): { value: T, done: boolean }} next
- *   A method which produces either the next value in a sequence or a result
- *   where the `done` property is `true` indicating the end of the Iterator.
- */
-
-/**
- * [Iterable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#iterable)
- * is a *protocol* which when implemented allows a JavaScript object to define
- * their iteration behavior, such as what values are looped over in a `for..of`
- * loop or `iterall`'s `forEach` function. Many [built-in types](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#Builtin_iterables)
- * implement the Iterable protocol, including `Array` and `Map`.
- *
- * While described by the [ES2015 version of JavaScript](http://www.ecma-international.org/ecma-262/6.0/#sec-iterable-interface)
- * it can be utilized by any version of JavaScript.
- *
- * @typedef {Object} Iterable
- * @template T The type of each iterated value
- * @property {function (): Iterator<T>} Symbol.iterator
- *   A method which produces an Iterator for this Iterable.
- */
-
-// In ES2015 (or a polyfilled) environment, this will be Symbol.iterator
-var SYMBOL_ITERATOR = typeof Symbol === 'function' && Symbol.iterator
-
-/**
- * A property name to be used as the name of an Iterable's method responsible
- * for producing an Iterator, referred to as `@@iterator`. Typically represents
- * the value `Symbol.iterator` but falls back to the string `"@@iterator"` when
- * `Symbol.iterator` is not defined.
- *
- * Use `$$iterator` for defining new Iterables instead of `Symbol.iterator`,
- * but do not use it for accessing existing Iterables, instead use
- * `getIterator()` or `isIterable()`.
- *
- * @example
- *
- * var $$iterator = require('iterall').$$iterator
- *
- * function Counter (to) {
- *   this.to = to
- * }
- *
- * Counter.prototype[$$iterator] = function () {
- *   return {
- *     to: this.to,
- *     num: 0,
- *     next () {
- *       if (this.num >= this.to) {
- *         return { value: undefined, done: true }
- *       }
- *       return { value: this.num++, done: false }
- *     }
- *   }
- * }
- *
- * var counter = new Counter(3)
- * for (var number of counter) {
- *   console.log(number) // 0 ... 1 ... 2
- * }
- *
- * @type {Symbol|string}
- */
-var $$iterator = SYMBOL_ITERATOR || '@@iterator'
-exports.$$iterator = $$iterator
-
-/**
- * Returns true if the provided object implements the Iterator protocol via
- * either implementing a `Symbol.iterator` or `"@@iterator"` method.
- *
- * @example
- *
- * var isIterable = require('iterall').isIterable
- * isIterable([ 1, 2, 3 ]) // true
- * isIterable('ABC') // true
- * isIterable({ length: 1, 0: 'Alpha' }) // false
- * isIterable({ key: 'value' }) // false
- * isIterable(new Map()) // true
- *
- * @param obj
- *   A value which might implement the Iterable protocol.
- * @return {boolean} true if Iterable.
- */
-function isIterable (obj) {
-  return !!getIteratorMethod(obj)
-}
-exports.isIterable = isIterable
-
-/**
- * Returns true if the provided object implements the Array-like protocol via
- * defining a positive-integer `length` property.
- *
- * @example
- *
- * var isArrayLike = require('iterall').isArrayLike
- * isArrayLike([ 1, 2, 3 ]) // true
- * isArrayLike('ABC') // true
- * isArrayLike({ length: 1, 0: 'Alpha' }) // true
- * isArrayLike({ key: 'value' }) // false
- * isArrayLike(new Map()) // false
- *
- * @param obj
- *   A value which might implement the Array-like protocol.
- * @return {boolean} true if Array-like.
- */
-function isArrayLike (obj) {
-  var length = obj != null && obj.length
-  return typeof length === 'number' && length >= 0 && length % 1 === 0
-}
-exports.isArrayLike = isArrayLike
-
-/**
- * Returns true if the provided object is an Object (i.e. not a string literal)
- * and is either Iterable or Array-like.
- *
- * This may be used in place of [Array.isArray()][isArray] to determine if an
- * object should be iterated-over. It always excludes string literals and
- * includes Arrays (regardless of if it is Iterable). It also includes other
- * Array-like objects such as NodeList, TypedArray, and Buffer.
- *
- * @example
- *
- * var isCollection = require('iterall').isCollection
- * isCollection([ 1, 2, 3 ]) // true
- * isCollection('ABC') // false
- * isCollection({ length: 1, 0: 'Alpha' }) // true
- * isCollection({ key: 'value' }) // false
- * isCollection(new Map()) // true
- *
- * @example
- *
- * var forEach = require('iterall').forEach
- * if (isCollection(obj)) {
- *   forEach(obj, function (value) {
- *     console.log(value)
- *   })
- * }
- *
- * @param obj
- *   An Object value which might implement the Iterable or Array-like protocols.
- * @return {boolean} true if Iterable or Array-like Object.
- */
-function isCollection (obj) {
-  return Object(obj) === obj && (isArrayLike(obj) || isIterable(obj))
-}
-exports.isCollection = isCollection
-
-/**
- * If the provided object implements the Iterator protocol, its Iterator object
- * is returned. Otherwise returns undefined.
- *
- * @example
- *
- * var getIterator = require('iterall').getIterator
- * var iterator = getIterator([ 1, 2, 3 ])
- * iterator.next() // { value: 1, done: false }
- * iterator.next() // { value: 2, done: false }
- * iterator.next() // { value: 3, done: false }
- * iterator.next() // { value: undefined, done: true }
- *
- * @template T the type of each iterated value
- * @param {Iterable<T>} iterable
- *   An Iterable object which is the source of an Iterator.
- * @return {Iterator<T>} new Iterator instance.
- */
-function getIterator (iterable) {
-  var method = getIteratorMethod(iterable)
-  if (method) {
-    return method.call(iterable)
-  }
-}
-exports.getIterator = getIterator
-
-/**
- * If the provided object implements the Iterator protocol, the method
- * responsible for producing its Iterator object is returned.
- *
- * This is used in rare cases for performance tuning. This method must be called
- * with obj as the contextual this-argument.
- *
- * @example
- *
- * var getIteratorMethod = require('iterall').getIteratorMethod
- * var myArray = [ 1, 2, 3 ]
- * var method = getIteratorMethod(myArray)
- * if (method) {
- *   var iterator = method.call(myArray)
- * }
- *
- * @template T the type of each iterated value
- * @param {Iterable<T>} iterable
- *   An Iterable object which defines an `@@iterator` method.
- * @return {function(): Iterator<T>} `@@iterator` method.
- */
-function getIteratorMethod (iterable) {
-  if (iterable != null) {
-    var method = SYMBOL_ITERATOR && iterable[SYMBOL_ITERATOR] || iterable['@@iterator']
-    if (typeof method === 'function') {
-      return method
-    }
-  }
-}
-exports.getIteratorMethod = getIteratorMethod
-
-/**
- * Given an object which either implements the Iterable protocol or is
- * Array-like, iterate over it, calling the `callback` at each iteration.
- *
- * Use `forEach` where you would expect to use a `for ... of` loop in ES6.
- * However `forEach` adheres to the behavior of [Array#forEach][] described in
- * the ECMAScript specification, skipping over "holes" in Array-likes. It will
- * also delegate to a `forEach` method on `collection` if one is defined,
- * ensuring native performance for `Arrays`.
- *
- * Similar to [Array#forEach][], the `callback` function accepts three
- * arguments, and is provided with `thisArg` as the calling context.
- *
- * Note: providing an infinite Iterator to forEach will produce an error.
- *
- * [Array#forEach]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
- *
- * @example
- *
- * var forEach = require('iterall').forEach
- *
- * forEach(myIterable, function (value, index, iterable) {
- *   console.log(value, index, iterable === myIterable)
- * })
- *
- * @example
- *
- * // ES6:
- * for (let value of myIterable) {
- *   console.log(value)
- * }
- *
- * // Any JavaScript environment:
- * forEach(myIterable, function (value) {
- *   console.log(value)
- * })
- *
- * @template T the type of each iterated value
- * @param {Iterable<T>|{ length: number }} collection
- *   The Iterable or array to iterate over.
- * @param {function(T, number, object)} callback
- *   Function to execute for each iteration, taking up to three arguments
- * @param [thisArg]
- *   Optional. Value to use as `this` when executing `callback`.
- */
-function forEach (collection, callback, thisArg) {
-  if (collection != null) {
-    if (typeof collection.forEach === 'function') {
-      return collection.forEach(callback, thisArg)
-    }
-    var i = 0
-    var iterator = getIterator(collection)
-    if (iterator) {
-      var step
-      while (!(step = iterator.next()).done) {
-        callback.call(thisArg, step.value, i++, collection)
-        // Infinite Iterators could cause forEach to run forever.
-        // After a very large number of iterations, produce an error.
-        /* istanbul ignore if */
-        if (i > 9999999) {
-          throw new TypeError('Near-infinite iteration.')
-        }
-      }
-    } else if (isArrayLike(collection)) {
-      for (; i < collection.length; i++) {
-        if (collection.hasOwnProperty(i)) {
-          callback.call(thisArg, collection[i], i, collection)
-        }
-      }
-    }
-  }
-}
-exports.forEach = forEach
-
-/**
- * Similar to `getIterator()`, this method returns a new Iterator given an
- * Iterable. However it will also create an Iterator for a non-Iterable
- * Array-like collection, such as Array in a non-ES2015 environment.
- *
- * `createIterator` is complimentary to `forEach`, but allows a "pull"-based
- * iteration as opposed to `forEach`'s "push"-based iteration.
- *
- * `createIterator` produces an Iterator for Array-likes with the same behavior
- * as ArrayIteratorPrototype described in the ECMAScript specification, and
- * does *not* skip over "holes".
- *
- * @example
- *
- * var createIterator = require('iterall').createIterator
- *
- * var myArraylike = { length: 3, 0: 'Alpha', 1: 'Bravo', 2: 'Charlie' }
- * var iterator = createIterator(myArraylike)
- * iterator.next() // { value: 'Alpha', done: false }
- * iterator.next() // { value: 'Bravo', done: false }
- * iterator.next() // { value: 'Charlie', done: false }
- * iterator.next() // { value: undefined, done: true }
- *
- * @template T the type of each iterated value
- * @param {Iterable<T>|{ length: number }} collection
- *   An Iterable or Array-like object to produce an Iterator.
- * @return {Iterator<T>} new Iterator instance.
- */
-function createIterator (collection) {
-  if (collection != null) {
-    var iterator = getIterator(collection)
-    if (iterator) {
-      return iterator
-    }
-    if (isArrayLike(collection)) {
-      return new ArrayLikeIterator(collection)
-    }
-  }
-}
-exports.createIterator = createIterator
-
-// When the object provided to `createIterator` is not Iterable but is
-// Array-like, this simple Iterator is created.
-function ArrayLikeIterator (obj) {
-  this._o = obj
-  this._i = 0
-}
-
-// Note: all Iterators are themselves Iterable.
-ArrayLikeIterator.prototype[$$iterator] = function () {
-  return this
-}
-
-// A simple state-machine determines the IteratorResult returned, yielding
-// each value in the Array-like object in order of their indicies.
-ArrayLikeIterator.prototype.next = function () {
-  if (this._o === void 0 || this._i >= this._o.length) {
-    this._o = void 0
-    return { value: void 0, done: true }
-  }
-  return { value: this._o[this._i++], done: false }
-}
-
-},{}],150:[function(require,module,exports){
+},{"../error":72,"../jsutils/invariant":81,"../language/kinds":89,"../language/visitor":95,"../type/schema":102,"../utilities/TypeInfo":103,"./specifiedRules":148}],150:[function(require,module,exports){
 (function (global){
 /**
  * marked - a markdown parser

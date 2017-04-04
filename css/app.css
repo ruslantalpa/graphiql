@@ -194,11 +194,14 @@
 }
 
 .graphiql-container .footer {
-  background: #f6f7f8;
   border-left: 1px solid #e0e0e0;
   border-top: 1px solid #e0e0e0;
   margin-left: 12px;
   position: relative;
+  padding: 2px 14px 2px;
+  background: #eeeeee;
+  border-bottom: 1px solid #d6d6d6;
+  border-top: 1px solid #e0e0e0;
 }
 
 .graphiql-container .footer:before {

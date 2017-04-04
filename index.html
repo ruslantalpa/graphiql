@@ -37,9 +37,10 @@
       copy them directly into your environment, or perhaps include them in your
       favored resource bundler.
      -->
-    <link rel="stylesheet" href="./node_modules/graphiql/graphiql.css" />
-    <script src="./node_modules/graphiql/graphiql.js"></script>
-
+    <link rel="stylesheet" href="./subzero_graphiql.css" />
+    <script src="./subzero_graphiql.min.js"></script>
+    <link rel="livePage" href="/lastupdate.txt" />
+  
   </head>
   <body>
     <div id="graphiql">Loading...</div>
@@ -93,6 +94,13 @@
         updateURL();
       }
 
+      function onSchemaTypeChange(schemaType) {
+        console.log(schemaType)
+        parameters.schemaType = schemaType;
+        updateURL();
+        location.reload();
+      }
+
       function updateURL() {
         var newSearch = '?' + Object.keys(parameters).filter(function (key) {
           return Boolean(parameters[key]);
@@ -109,11 +117,12 @@
       function graphQLFetcher(graphQLParams) {
         // This example expects a GraphQL server at the path /graphql.
         // Change this to point wherever you host your GraphQL server.
-        return fetch('/graphql', {
+        return fetch('/graphql/' + (graphQLParams.schema_type || 'simple'), {
           method: 'post',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            'Authorization': graphQLParams.auth_token ? 'Bearer ' + graphQLParams.auth_token : null
           },
           body: JSON.stringify(graphQLParams),
           credentials: 'include',
@@ -133,14 +142,16 @@
       // how you can customize GraphiQL by providing different values or
       // additional child elements.
       ReactDOM.render(
-        React.createElement(GraphiQL, {
+        React.createElement(subZeroGraphiQL, {
+          schema_type: parameters.schemaType || 'simple',
           fetcher: graphQLFetcher,
           query: parameters.query,
           variables: parameters.variables,
           operationName: parameters.operationName,
           onEditQuery: onEditQuery,
           onEditVariables: onEditVariables,
-          onEditOperationName: onEditOperationName
+          onEditOperationName: onEditOperationName,
+          onSchemaTypeChange: onSchemaTypeChange
         }),
         document.getElementById('graphiql')
       );

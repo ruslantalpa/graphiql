@@ -21,7 +21,6 @@ echo "Bundling subzero_graphiql.css..."
 postcss --use autoprefixer -d dist/ css/*.css
 cat dist/*.css > subzero_graphiql.css
 
-
 git config --global user.email "$GH_EMAIL" > /dev/null 2>&1
 git config --global user.name "$GH_NAME" > /dev/null 2>&1
 

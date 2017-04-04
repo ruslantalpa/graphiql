@@ -1,4 +1,4 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.subZeroGraphiQL = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.GraphiQL = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -252,7 +252,7 @@ DocExplorer.propTypes = {
   schema: _react.PropTypes.instanceOf(_graphql.GraphQLSchema)
 };
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./DocExplorer/FieldDoc":3,"./DocExplorer/SchemaDoc":5,"./DocExplorer/SearchBox":6,"./DocExplorer/SearchResults":7,"./DocExplorer/TypeDoc":8,"graphql":79}],2:[function(require,module,exports){
+},{"./DocExplorer/FieldDoc":3,"./DocExplorer/SchemaDoc":5,"./DocExplorer/SearchBox":6,"./DocExplorer/SearchResults":7,"./DocExplorer/TypeDoc":8,"graphql":78}],2:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -313,7 +313,7 @@ Argument.propTypes = {
   showDefaultValue: _react.PropTypes.bool
 };
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./TypeLink":9,"graphql":79}],3:[function(require,module,exports){
+},{"./TypeLink":9,"graphql":78}],3:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -508,7 +508,7 @@ MarkdownContent.propTypes = {
 };
 exports.default = MarkdownContent;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"marked":150}],5:[function(require,module,exports){
+},{"marked":149}],5:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -719,7 +719,7 @@ SearchBox.propTypes = {
 };
 exports.default = SearchBox;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../utility/debounce":26}],7:[function(require,module,exports){
+},{"../../utility/debounce":25}],7:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1258,7 +1258,7 @@ EnumValue.propTypes = {
   value: _react.PropTypes.object
 };
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./Argument":2,"./MarkdownContent":4,"./TypeLink":9,"graphql":79}],9:[function(require,module,exports){
+},{"./Argument":2,"./MarkdownContent":4,"./TypeLink":9,"graphql":78}],9:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1346,7 +1346,7 @@ function renderType(type, _onClick) {
   );
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"graphql":79}],10:[function(require,module,exports){
+},{"graphql":78}],10:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1610,6 +1610,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *
  * @see https://github.com/graphql/graphiql#usage
  */
+
+console.log('loaded new graphiql');
+
 var GraphiQL = exports.GraphiQL = function (_React$Component) {
   _inherits(GraphiQL, _React$Component);
 
@@ -2625,7 +2628,7 @@ function isObservable(value) {
   return (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && typeof value.subscribe === 'function';
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../utility/CodeMirrorSizer":23,"../utility/StorageAPI":25,"../utility/debounce":26,"../utility/elementPosition":27,"../utility/fillLeafs":28,"../utility/find":29,"../utility/getQueryFacts":30,"../utility/getSelectedOperationName":31,"../utility/introspectionQueries":32,"./DocExplorer":1,"./ExecuteButton":10,"./QueryEditor":13,"./QueryHistory":14,"./ResultViewer":15,"./ToolbarButton":16,"./ToolbarGroup":17,"./ToolbarMenu":18,"./ToolbarSelect":19,"./VariableEditor":20,"graphql":79}],12:[function(require,module,exports){
+},{"../utility/CodeMirrorSizer":22,"../utility/StorageAPI":24,"../utility/debounce":25,"../utility/elementPosition":26,"../utility/fillLeafs":27,"../utility/find":28,"../utility/getQueryFacts":29,"../utility/getSelectedOperationName":30,"../utility/introspectionQueries":31,"./DocExplorer":1,"./ExecuteButton":10,"./QueryEditor":13,"./QueryHistory":14,"./ResultViewer":15,"./ToolbarButton":16,"./ToolbarGroup":17,"./ToolbarMenu":18,"./ToolbarSelect":19,"./VariableEditor":20,"graphql":78}],12:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2942,7 +2945,7 @@ QueryEditor.propTypes = {
   editorTheme: _react.PropTypes.string
 };
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../utility/onHasCompletion":33,"codemirror":69,"codemirror-graphql/hint":34,"codemirror-graphql/info":35,"codemirror-graphql/jump":36,"codemirror-graphql/lint":37,"codemirror-graphql/mode":38,"codemirror/addon/comment/comment":57,"codemirror/addon/edit/closebrackets":59,"codemirror/addon/edit/matchbrackets":60,"codemirror/addon/fold/brace-fold":61,"codemirror/addon/fold/foldgutter":63,"codemirror/addon/hint/show-hint":64,"codemirror/addon/lint/lint":65,"codemirror/keymap/sublime":68,"graphql":79,"marked":150}],14:[function(require,module,exports){
+},{"../utility/onHasCompletion":32,"codemirror":68,"codemirror-graphql/hint":33,"codemirror-graphql/info":34,"codemirror-graphql/jump":35,"codemirror-graphql/lint":36,"codemirror-graphql/mode":37,"codemirror/addon/comment/comment":56,"codemirror/addon/edit/closebrackets":58,"codemirror/addon/edit/matchbrackets":59,"codemirror/addon/fold/brace-fold":60,"codemirror/addon/fold/foldgutter":62,"codemirror/addon/hint/show-hint":63,"codemirror/addon/lint/lint":64,"codemirror/keymap/sublime":67,"graphql":78,"marked":149}],14:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -3069,7 +3072,7 @@ QueryHistory.propTypes = {
   storage: _react.PropTypes.object
 };
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../utility/HistoryStore":24,"./HistoryQuery":12}],15:[function(require,module,exports){
+},{"../utility/HistoryStore":23,"./HistoryQuery":12}],15:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -3208,7 +3211,7 @@ ResultViewer.propTypes = {
   editorTheme: _react.PropTypes.string
 };
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"codemirror":69,"codemirror-graphql/results/mode":39,"codemirror/addon/dialog/dialog":58,"codemirror/addon/fold/brace-fold":61,"codemirror/addon/fold/foldgutter":63,"codemirror/addon/search/search":66,"codemirror/keymap/sublime":68}],16:[function(require,module,exports){
+},{"codemirror":68,"codemirror-graphql/results/mode":38,"codemirror/addon/dialog/dialog":57,"codemirror/addon/fold/brace-fold":60,"codemirror/addon/fold/foldgutter":62,"codemirror/addon/search/search":65,"codemirror/keymap/sublime":67}],16:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -3892,122 +3895,20 @@ VariableEditor.propTypes = {
   editorTheme: _react.PropTypes.string
 };
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../utility/onHasCompletion":33,"codemirror":69,"codemirror-graphql/variables/hint":54,"codemirror-graphql/variables/lint":55,"codemirror-graphql/variables/mode":56,"codemirror/addon/edit/closebrackets":59,"codemirror/addon/edit/matchbrackets":60,"codemirror/addon/fold/brace-fold":61,"codemirror/addon/fold/foldgutter":63,"codemirror/addon/hint/show-hint":64,"codemirror/addon/lint/lint":65,"codemirror/keymap/sublime":68}],21:[function(require,module,exports){
-(function (global){
+},{"../utility/onHasCompletion":32,"codemirror":68,"codemirror-graphql/variables/hint":53,"codemirror-graphql/variables/lint":54,"codemirror-graphql/variables/mode":55,"codemirror/addon/edit/closebrackets":58,"codemirror/addon/edit/matchbrackets":59,"codemirror/addon/fold/brace-fold":60,"codemirror/addon/fold/foldgutter":62,"codemirror/addon/hint/show-hint":63,"codemirror/addon/lint/lint":64,"codemirror/keymap/sublime":67}],21:[function(require,module,exports){
 'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.subZeroGraphiQL = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _GraphiQL = require('./GraphiQL');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* eslint-disable */
-
-
-var subZeroGraphiQL = exports.subZeroGraphiQL = function (_React$Component) {
-  _inherits(subZeroGraphiQL, _React$Component);
-
-  function subZeroGraphiQL(props) {
-    _classCallCheck(this, subZeroGraphiQL);
-
-    var _this = _possibleConstructorReturn(this, (subZeroGraphiQL.__proto__ || Object.getPrototypeOf(subZeroGraphiQL)).call(this, props));
-
-    _this.state = {
-      auth_token: null,
-      schema_type: props.schema_type
-    };
-    _this._onAuthTokenChange = _this._onAuthTokenChange.bind(_this);
-    _this._onSchemaTypeChange = _this._onSchemaTypeChange.bind(_this);
-    _this._fetcher = _this._fetcher.bind(_this);
-    return _this;
-  }
-
-  _createClass(subZeroGraphiQL, [{
-    key: '_fetcher',
-    value: function _fetcher(graphQLParams) {
-      graphQLParams.auth_token = this.state.auth_token;
-      graphQLParams.schema_type = this.state.schema_type;
-      return this.props.fetcher(graphQLParams);
-    }
-  }, {
-    key: '_onAuthTokenChange',
-    value: function _onAuthTokenChange(e) {
-      this.setState({ auth_token: e.target.value });
-    }
-  }, {
-    key: '_onSchemaTypeChange',
-    value: function _onSchemaTypeChange(e) {
-      this.setState({ schema_type: e.target.value });
-      if (this.props.onSchemaTypeChange) {
-        this.props.onSchemaTypeChange(e.target.value);
-      }
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this2 = this;
-
-      return _react2.default.createElement(
-        _GraphiQL.GraphiQL,
-        {
-          ref: function ref(c) {
-            _this2.graphiql = c;
-          },
-          state: this.state,
-          fetcher: this._fetcher,
-          query: this.props.query,
-          variables: this.props.variables,
-          operationName: this.props.operationName,
-          onEditQuery: this.props.onEditQuery,
-          onEditVariables: this.props.onEditVariables,
-          onEditOperationName: this.props.onEditOperationName,
-          onToggleDocs: this.props.onToggleDocs },
-        _react2.default.createElement(
-          _GraphiQL.GraphiQL.Footer,
-          null,
-          _react2.default.createElement(
-            'select',
-            { onChange: this._onSchemaTypeChange, value: this.state.schema_type },
-            _react2.default.createElement(
-              'option',
-              { value: 'simple' },
-              'Simple Schema'
-            ),
-            _react2.default.createElement(
-              'option',
-              { value: 'relay' },
-              'Relay Schema'
-            )
-          ),
-          _react2.default.createElement('input', { className: 'auth-token', onChange: this._onAuthTokenChange, value: this.state.auth_token, placeholder: 'JWT value' })
-        )
-      );
-    }
-  }]);
-
-  return subZeroGraphiQL;
-}(_react2.default.Component);
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./GraphiQL":11}],22:[function(require,module,exports){
-'use strict';
+/**
+ *  Copyright (c) Facebook, Inc.
+ *  All rights reserved.
+ *
+ *  This source code is licensed under the license found in the
+ *  LICENSE file in the root directory of this source tree.
+ */
 
 // The primary React component to use.
-module.exports = require('./components/subZeroGraphiQL').subZeroGraphiQL;
-},{"./components/subZeroGraphiQL":21}],23:[function(require,module,exports){
+module.exports = require('./components/GraphiQL').GraphiQL;
+},{"./components/GraphiQL":11}],22:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4056,7 +3957,7 @@ var CodeMirrorSizer = function () {
 }();
 
 exports.default = CodeMirrorSizer;
-},{}],24:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4121,7 +4022,7 @@ var HistoryStore = function () {
 }();
 
 exports.default = HistoryStore;
-},{}],25:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -4169,7 +4070,7 @@ var StorageAPI = function () {
 }();
 
 exports.default = StorageAPI;
-},{}],26:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4201,7 +4102,7 @@ function debounce(duration, fn) {
     }, duration);
   };
 }
-},{}],27:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4240,7 +4141,7 @@ function getTop(initialElem) {
   }
   return pt;
 }
-},{}],28:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -4422,7 +4323,7 @@ function getIndentation(str, index) {
   }
   return str.substring(indentStart, indentEnd);
 }
-},{"graphql":79}],29:[function(require,module,exports){
+},{"graphql":78}],28:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4446,7 +4347,7 @@ function find(list, predicate) {
     }
   }
 }
-},{}],30:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -4519,7 +4420,7 @@ function collectVariables(schema, documentAST) {
   });
   return variableToType;
 }
-},{"graphql":79}],31:[function(require,module,exports){
+},{"graphql":78}],30:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4566,7 +4467,7 @@ function getSelectedOperationName(prevOperations, prevSelectedOperationName, ope
   // Use the first operation.
   return names[0];
 }
-},{}],32:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -4587,7 +4488,7 @@ Object.defineProperty(exports, 'introspectionQuery', {
 // query which includes the `subscriptionType` field as the stock introspection
 // query does. This backup query removes that field.
 var introspectionQuerySansSubscriptions = exports.introspectionQuerySansSubscriptions = '\n  query IntrospectionQuery {\n    __schema {\n      queryType { name }\n      mutationType { name }\n      types {\n        ...FullType\n      }\n      directives {\n        name\n        description\n        locations\n        args {\n          ...InputValue\n        }\n      }\n    }\n  }\n\n  fragment FullType on __Type {\n    kind\n    name\n    description\n    fields(includeDeprecated: true) {\n      name\n      description\n      args {\n        ...InputValue\n      }\n      type {\n        ...TypeRef\n      }\n      isDeprecated\n      deprecationReason\n    }\n    inputFields {\n      ...InputValue\n    }\n    interfaces {\n      ...TypeRef\n    }\n    enumValues(includeDeprecated: true) {\n      name\n      description\n      isDeprecated\n      deprecationReason\n    }\n    possibleTypes {\n      ...TypeRef\n    }\n  }\n\n  fragment InputValue on __InputValue {\n    name\n    description\n    type { ...TypeRef }\n    defaultValue\n  }\n\n  fragment TypeRef on __Type {\n    kind\n    name\n    ofType {\n      kind\n      name\n      ofType {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n                ofType {\n                  kind\n                  name\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n';
-},{"graphql":79}],33:[function(require,module,exports){
+},{"graphql":78}],32:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -4682,7 +4583,7 @@ function renderType(type) {
   }
   return '<a class="typeName">' + type.name + '</a>';
 }
-},{"codemirror":69,"graphql":79,"marked":150}],34:[function(require,module,exports){
+},{"codemirror":68,"graphql":78,"marked":149}],33:[function(require,module,exports){
 'use strict';
 
 var _codemirror = require('codemirror');
@@ -4738,7 +4639,7 @@ _codemirror2.default.registerHelper('hint', 'graphql', function (editor, options
 
   return results;
 });
-},{"./utils/getHintsAtPosition":45,"codemirror":69}],35:[function(require,module,exports){
+},{"./utils/getHintsAtPosition":44,"codemirror":68}],34:[function(require,module,exports){
 'use strict';
 
 var _graphql = require('graphql');
@@ -4933,7 +4834,7 @@ function text(into, content, className, options, ref) {
     into.appendChild(document.createTextNode(content));
   }
 }
-},{"./utils/SchemaReference":43,"./utils/getTypeInfo":46,"./utils/info-addon":48,"codemirror":69,"graphql":79}],36:[function(require,module,exports){
+},{"./utils/SchemaReference":42,"./utils/getTypeInfo":45,"./utils/info-addon":47,"codemirror":68,"graphql":78}],35:[function(require,module,exports){
 'use strict';
 
 var _codemirror = require('codemirror');
@@ -4997,7 +4898,7 @@ _codemirror2.default.registerHelper('jump', 'graphql', function (token, options)
     return (0, _SchemaReference.getTypeReference)(typeInfo);
   }
 });
-},{"./utils/SchemaReference":43,"./utils/getTypeInfo":46,"./utils/jump-addon":50,"codemirror":69}],37:[function(require,module,exports){
+},{"./utils/SchemaReference":42,"./utils/getTypeInfo":45,"./utils/jump-addon":49,"codemirror":68}],36:[function(require,module,exports){
 'use strict';
 
 var _codemirror = require('codemirror');
@@ -5077,7 +4978,7 @@ function annotations(editor, error, severity, type) {
 function mapCat(array, mapper) {
   return Array.prototype.concat.apply([], array.map(mapper));
 }
-},{"codemirror":69,"graphql":79}],38:[function(require,module,exports){
+},{"codemirror":68,"graphql":78}],37:[function(require,module,exports){
 'use strict';
 
 var _codemirror = require('codemirror');
@@ -5151,7 +5052,7 @@ function indent(state, textAfter) {
   var level = !levels || levels.length === 0 ? state.indentLevel : levels[levels.length - 1] - (this.electricInput.test(textAfter) ? 1 : 0);
   return level * this.config.indentUnit;
 }
-},{"./utils/Rules":42,"./utils/onlineParser":52,"codemirror":69}],39:[function(require,module,exports){
+},{"./utils/Rules":41,"./utils/onlineParser":51,"codemirror":68}],38:[function(require,module,exports){
 'use strict';
 
 var _codemirror = require('codemirror');
@@ -5265,7 +5166,7 @@ var ParseRules = {
   ObjectValue: [(0, _RuleHelpers.p)('{'), (0, _RuleHelpers.list)('ObjectField', (0, _RuleHelpers.p)(',')), (0, _RuleHelpers.p)('}')],
   ObjectField: [(0, _RuleHelpers.t)('String', 'property'), (0, _RuleHelpers.p)(':'), 'Value']
 };
-},{"../utils/RuleHelpers":41,"../utils/onlineParser":52,"codemirror":69}],40:[function(require,module,exports){
+},{"../utils/RuleHelpers":40,"../utils/onlineParser":51,"codemirror":68}],39:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -5442,7 +5343,7 @@ var CharacterStream = function () {
 }();
 
 exports.default = CharacterStream;
-},{}],41:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -5500,7 +5401,7 @@ function p(value, style) {
     }
   };
 }
-},{}],42:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -5711,7 +5612,7 @@ function type(style) {
     }
   };
 }
-},{"../utils/RuleHelpers":41}],43:[function(require,module,exports){
+},{"../utils/RuleHelpers":40}],42:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -5786,7 +5687,7 @@ function getTypeReference(typeInfo, type) {
 function isMetaField(fieldDef) {
   return fieldDef.name.slice(0, 2) === '__';
 }
-},{"graphql":79}],44:[function(require,module,exports){
+},{"graphql":78}],43:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5814,7 +5715,7 @@ function forEachState(stack, fn) {
     fn(reverseStateStack[i]);
   }
 }
-},{}],45:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -6131,7 +6032,7 @@ function getDefinitionState(tokenState) {
 
   return definitionState;
 }
-},{"./Rules":42,"./forEachState":44,"./getTypeInfo":46,"./hintList":47,"./objectValues":51,"./runParser":53,"graphql":79,"graphql/type/introspection":99}],46:[function(require,module,exports){
+},{"./Rules":41,"./forEachState":43,"./getTypeInfo":45,"./hintList":46,"./objectValues":50,"./runParser":52,"graphql":78,"graphql/type/introspection":98}],45:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -6271,7 +6172,7 @@ function find(array, predicate) {
     }
   }
 }
-},{"./forEachState":44,"graphql":79,"graphql/type/introspection":99}],47:[function(require,module,exports){
+},{"./forEachState":43,"graphql":78,"graphql/type/introspection":98}],46:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -6401,7 +6302,7 @@ function lexicalDistance(a, b) {
 
   return d[aLength][bLength];
 }
-},{}],48:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 'use strict';
 
 var _codemirror = require('codemirror');
@@ -6560,7 +6461,7 @@ function showPopup(cm, box, info) {
   _codemirror2.default.on(popup, 'mouseout', onMouseOut);
   _codemirror2.default.on(cm.getWrapperElement(), 'mouseout', onMouseOut);
 }
-},{"codemirror":69}],49:[function(require,module,exports){
+},{"codemirror":68}],48:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -6867,7 +6768,7 @@ function readDigits() {
     ch();
   } while (code >= 48 && code <= 57); // 0 - 9
 }
-},{}],50:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 'use strict';
 
 var _codemirror = require('codemirror');
@@ -7017,7 +6918,7 @@ function disableJumpMode(cm) {
 
   marker.clear();
 }
-},{"codemirror":69}],51:[function(require,module,exports){
+},{"codemirror":68}],50:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7042,7 +6943,7 @@ function objectValues(object) {
   }
   return values;
 }
-},{}],52:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -7311,7 +7212,7 @@ function lex(LexRules, stream) {
     }
   }
 }
-},{}],53:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -7351,7 +7252,7 @@ function runParser(sourceText, parserOptions, callbackFn) {
     }
   });
 }
-},{"./CharacterStream":40,"./onlineParser":52}],54:[function(require,module,exports){
+},{"./CharacterStream":39,"./onlineParser":51}],53:[function(require,module,exports){
 'use strict';
 
 var _codemirror = require('codemirror');
@@ -7520,7 +7421,7 @@ function getTypeInfo(variableToType, tokenState) {
 
   return info;
 }
-},{"../utils/forEachState":44,"../utils/hintList":47,"codemirror":69,"graphql":79}],55:[function(require,module,exports){
+},{"../utils/forEachState":43,"../utils/hintList":46,"codemirror":68,"graphql":78}],54:[function(require,module,exports){
 'use strict';
 
 var _codemirror = require('codemirror');
@@ -7714,7 +7615,7 @@ function isNullish(value) {
 function mapCat(array, mapper) {
   return Array.prototype.concat.apply([], array.map(mapper));
 }
-},{"../utils/jsonParse":49,"codemirror":69,"graphql":79}],56:[function(require,module,exports){
+},{"../utils/jsonParse":48,"codemirror":68,"graphql":78}],55:[function(require,module,exports){
 'use strict';
 
 var _codemirror = require('codemirror');
@@ -7841,7 +7742,7 @@ function namedKey(style) {
     }
   };
 }
-},{"../utils/RuleHelpers":41,"../utils/onlineParser":52,"codemirror":69}],57:[function(require,module,exports){
+},{"../utils/RuleHelpers":40,"../utils/onlineParser":51,"codemirror":68}],56:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -8056,7 +7957,7 @@ function namedKey(style) {
   });
 });
 
-},{"../../lib/codemirror":69}],58:[function(require,module,exports){
+},{"../../lib/codemirror":68}],57:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -8215,7 +8116,7 @@ function namedKey(style) {
   });
 });
 
-},{"../../lib/codemirror":69}],59:[function(require,module,exports){
+},{"../../lib/codemirror":68}],58:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -8419,7 +8320,7 @@ function namedKey(style) {
   }
 });
 
-},{"../../lib/codemirror":69}],60:[function(require,module,exports){
+},{"../../lib/codemirror":68}],59:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -8543,7 +8444,7 @@ function namedKey(style) {
   });
 });
 
-},{"../../lib/codemirror":69}],61:[function(require,module,exports){
+},{"../../lib/codemirror":68}],60:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -8650,7 +8551,7 @@ CodeMirror.registerHelper("fold", "include", function(cm, start) {
 
 });
 
-},{"../../lib/codemirror":69}],62:[function(require,module,exports){
+},{"../../lib/codemirror":68}],61:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -8802,7 +8703,7 @@ CodeMirror.registerHelper("fold", "include", function(cm, start) {
   });
 });
 
-},{"../../lib/codemirror":69}],63:[function(require,module,exports){
+},{"../../lib/codemirror":68}],62:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -8950,7 +8851,7 @@ CodeMirror.registerHelper("fold", "include", function(cm, start) {
   }
 });
 
-},{"../../lib/codemirror":69,"./foldcode":62}],64:[function(require,module,exports){
+},{"../../lib/codemirror":68,"./foldcode":61}],63:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -9390,7 +9291,7 @@ CodeMirror.registerHelper("fold", "include", function(cm, start) {
   CodeMirror.defineOption("hintOptions", null);
 });
 
-},{"../../lib/codemirror":69}],65:[function(require,module,exports){
+},{"../../lib/codemirror":68}],64:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -9635,7 +9536,7 @@ CodeMirror.registerHelper("fold", "include", function(cm, start) {
   });
 });
 
-},{"../../lib/codemirror":69}],66:[function(require,module,exports){
+},{"../../lib/codemirror":68}],65:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -9889,7 +9790,7 @@ CodeMirror.registerHelper("fold", "include", function(cm, start) {
   CodeMirror.commands.replaceAll = function(cm) {replace(cm, true);};
 });
 
-},{"../../lib/codemirror":69,"../dialog/dialog":58,"./searchcursor":67}],67:[function(require,module,exports){
+},{"../../lib/codemirror":68,"../dialog/dialog":57,"./searchcursor":66}],66:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -10080,7 +9981,7 @@ CodeMirror.registerHelper("fold", "include", function(cm, start) {
   });
 });
 
-},{"../../lib/codemirror":69}],68:[function(require,module,exports){
+},{"../../lib/codemirror":68}],67:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -10678,7 +10579,7 @@ CodeMirror.registerHelper("fold", "include", function(cm, start) {
   CodeMirror.normalizeKeyMap(map);
 });
 
-},{"../addon/edit/matchbrackets":60,"../addon/search/searchcursor":67,"../lib/codemirror":69}],69:[function(require,module,exports){
+},{"../addon/edit/matchbrackets":59,"../addon/search/searchcursor":66,"../lib/codemirror":68}],68:[function(require,module,exports){
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -19985,7 +19886,7 @@ return CodeMirror$1;
 
 })));
 
-},{}],70:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20101,7 +20002,7 @@ GraphQLError.prototype = Object.create(Error.prototype, {
   constructor: { value: GraphQLError },
   name: { value: 'GraphQLError' }
 });
-},{"../language/location":91}],71:[function(require,module,exports){
+},{"../language/location":90}],70:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20135,7 +20036,7 @@ function formatError(error) {
  *  LICENSE file in the root directory of this source tree. An additional grant
  *  of patent rights can be found in the PATENTS file in the same directory.
  */
-},{"../jsutils/invariant":81}],72:[function(require,module,exports){
+},{"../jsutils/invariant":80}],71:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20177,7 +20078,7 @@ Object.defineProperty(exports, 'formatError', {
     return _formatError.formatError;
   }
 });
-},{"./GraphQLError":70,"./formatError":71,"./locatedError":73,"./syntaxError":74}],73:[function(require,module,exports){
+},{"./GraphQLError":69,"./formatError":70,"./locatedError":72,"./syntaxError":73}],72:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20210,7 +20111,7 @@ function locatedError(originalError, nodes, path) {
  *  LICENSE file in the root directory of this source tree. An additional grant
  *  of patent rights can be found in the PATENTS file in the same directory.
  */
-},{"./GraphQLError":70}],74:[function(require,module,exports){
+},{"./GraphQLError":69}],73:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -20259,7 +20160,7 @@ function highlightSourceAtLocation(source, location) {
 function lpad(len, str) {
   return Array(len - str.length + 1).join(' ') + str;
 }
-},{"../language/location":91,"./GraphQLError":70}],75:[function(require,module,exports){
+},{"../language/location":90,"./GraphQLError":69}],74:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21066,7 +20967,7 @@ function getFieldDef(schema, parentType, fieldName) {
   }
   return parentType.getFields()[fieldName];
 }
-},{"../error":72,"../jsutils/find":80,"../jsutils/invariant":81,"../jsutils/isNullish":83,"../language/kinds":89,"../type/definition":96,"../type/directives":97,"../type/introspection":99,"../type/schema":101,"../utilities/typeFromAST":119,"./values":77,"iterall":149}],76:[function(require,module,exports){
+},{"../error":71,"../jsutils/find":79,"../jsutils/invariant":80,"../jsutils/isNullish":82,"../language/kinds":88,"../type/definition":95,"../type/directives":96,"../type/introspection":98,"../type/schema":100,"../utilities/typeFromAST":118,"./values":76,"iterall":148}],75:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21093,7 +20994,7 @@ Object.defineProperty(exports, 'responsePathAsArray', {
     return _execute.responsePathAsArray;
   }
 });
-},{"./execute":75}],77:[function(require,module,exports){
+},{"./execute":74}],76:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21330,7 +21231,7 @@ function coerceValue(type, value) {
 
   return parsed;
 }
-},{"../error":72,"../jsutils/invariant":81,"../jsutils/isInvalid":82,"../jsutils/isNullish":83,"../jsutils/keyMap":84,"../language/kinds":89,"../language/printer":93,"../type/definition":96,"../utilities/isValidJSValue":114,"../utilities/isValidLiteralValue":115,"../utilities/typeFromAST":119,"../utilities/valueFromAST":120,"iterall":149}],78:[function(require,module,exports){
+},{"../error":71,"../jsutils/invariant":80,"../jsutils/isInvalid":81,"../jsutils/isNullish":82,"../jsutils/keyMap":83,"../language/kinds":88,"../language/printer":92,"../type/definition":95,"../utilities/isValidJSValue":113,"../utilities/isValidLiteralValue":114,"../utilities/typeFromAST":118,"../utilities/valueFromAST":119,"iterall":148}],77:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21394,7 +21295,7 @@ function graphql(schema, requestString, rootValue, contextValue, variableValues,
     return { errors: [error] };
   });
 }
-},{"./execution/execute":75,"./language/parser":92,"./language/source":94,"./validation/validate":148}],79:[function(require,module,exports){
+},{"./execution/execute":74,"./language/parser":91,"./language/source":93,"./validation/validate":147}],78:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -21973,7 +21874,7 @@ Object.defineProperty(exports, 'findDeprecatedUsages', {
     return _utilities.findDeprecatedUsages;
   }
 });
-},{"./error":72,"./execution":76,"./graphql":78,"./language":88,"./type":98,"./utilities":112,"./validation":121}],80:[function(require,module,exports){
+},{"./error":71,"./execution":75,"./graphql":77,"./language":87,"./type":97,"./utilities":111,"./validation":120}],79:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -21997,7 +21898,7 @@ function find(list, predicate) {
     }
   }
 }
-},{}],81:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22019,7 +21920,7 @@ function invariant(condition, message) {
     throw new Error(message);
   }
 }
-},{}],82:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22042,7 +21943,7 @@ exports.default = isInvalid;
 function isInvalid(value) {
   return value === undefined || value !== value;
 }
-},{}],83:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22065,7 +21966,7 @@ exports.default = isNullish;
 function isNullish(value) {
   return value === null || value === undefined || value !== value;
 }
-},{}],84:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22110,7 +22011,7 @@ function keyMap(list, keyFn) {
     return map[keyFn(item)] = item, map;
   }, {});
 }
-},{}],85:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22149,7 +22050,7 @@ function keyValMap(list, keyFn, valFn) {
     return map[keyFn(item)] = valFn(item), map;
   }, {});
 }
-},{}],86:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22179,7 +22080,7 @@ function quotedOrList(items) {
     return list + (selected.length > 2 ? ', ' : ' ') + (index === selected.length - 1 ? 'or ' : '') + quoted;
   });
 }
-},{}],87:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -22259,7 +22160,7 @@ function lexicalDistance(a, b) {
 
   return d[aLength][bLength];
 }
-},{}],88:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22364,7 +22265,7 @@ var Kind = _interopRequireWildcard(_kinds);
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 exports.Kind = Kind;
-},{"./kinds":89,"./lexer":90,"./location":91,"./parser":92,"./printer":93,"./source":94,"./visitor":95}],89:[function(require,module,exports){
+},{"./kinds":88,"./lexer":89,"./location":90,"./parser":91,"./printer":92,"./source":93,"./visitor":94}],88:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22446,7 +22347,7 @@ var TYPE_EXTENSION_DEFINITION = exports.TYPE_EXTENSION_DEFINITION = 'TypeExtensi
 // Directive Definitions
 
 var DIRECTIVE_DEFINITION = exports.DIRECTIVE_DEFINITION = 'DirectiveDefinition';
-},{}],90:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22949,7 +22850,7 @@ function readName(source, position, line, col, prev) {
   }
   return new Tok(NAME, position, end, line, col, prev, slice.call(body, position, end));
 }
-},{"../error":72}],91:[function(require,module,exports){
+},{"../error":71}],90:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22987,7 +22888,7 @@ function getLocation(source, position) {
 /**
  * Represents a location in a Source.
  */
-},{}],92:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24008,7 +23909,7 @@ function many(lexer, openKind, parseFn, closeKind) {
   }
   return nodes;
 }
-},{"../error":72,"./kinds":89,"./lexer":90,"./source":94}],93:[function(require,module,exports){
+},{"../error":71,"./kinds":88,"./lexer":89,"./source":93}],92:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24291,7 +24192,7 @@ function wrap(start, maybeString, end) {
 function indent(maybeString) {
   return maybeString && maybeString.replace(/\n/g, '\n  ');
 }
-},{"./visitor":95}],94:[function(require,module,exports){
+},{"./visitor":94}],93:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24321,7 +24222,7 @@ var Source = exports.Source = function Source(body, name) {
   this.body = body;
   this.name = name || 'GraphQL';
 };
-},{}],95:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -24712,7 +24613,7 @@ function getVisitFn(visitor, kind, isLeaving) {
     }
   }
 }
-},{}],96:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25465,7 +25366,7 @@ var GraphQLNonNull = exports.GraphQLNonNull = function () {
 
 
 GraphQLNonNull.prototype.toJSON = GraphQLNonNull.prototype.inspect = GraphQLNonNull.prototype.toString;
-},{"../jsutils/invariant":81,"../jsutils/isNullish":83,"../language/kinds":89,"../utilities/assertValidName":103}],97:[function(require,module,exports){
+},{"../jsutils/invariant":80,"../jsutils/isNullish":82,"../language/kinds":88,"../utilities/assertValidName":102}],96:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25608,7 +25509,7 @@ var GraphQLDeprecatedDirective = exports.GraphQLDeprecatedDirective = new GraphQ
  * The full list of specified directives.
  */
 var specifiedDirectives = exports.specifiedDirectives = [GraphQLIncludeDirective, GraphQLSkipDirective, GraphQLDeprecatedDirective];
-},{"../jsutils/invariant":81,"../utilities/assertValidName":103,"./definition":96,"./scalars":100}],98:[function(require,module,exports){
+},{"../jsutils/invariant":80,"../utilities/assertValidName":102,"./definition":95,"./scalars":99}],97:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25923,7 +25824,7 @@ Object.defineProperty(exports, 'TypeNameMetaFieldDef', {
     return _introspection.TypeNameMetaFieldDef;
   }
 });
-},{"./definition":96,"./directives":97,"./introspection":99,"./scalars":100,"./schema":101}],99:[function(require,module,exports){
+},{"./definition":95,"./directives":96,"./introspection":98,"./scalars":99,"./schema":100}],98:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26395,7 +26296,7 @@ var TypeNameMetaFieldDef = exports.TypeNameMetaFieldDef = {
     return parentType.name;
   }
 };
-},{"../jsutils/isInvalid":82,"../language/printer":93,"../utilities/astFromValue":104,"./definition":96,"./directives":97,"./scalars":100}],100:[function(require,module,exports){
+},{"../jsutils/isInvalid":81,"../language/printer":92,"../utilities/astFromValue":103,"./definition":95,"./directives":96,"./scalars":99}],99:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26506,7 +26407,7 @@ var GraphQLID = exports.GraphQLID = new _definition.GraphQLScalarType({
     return ast.kind === Kind.STRING || ast.kind === Kind.INT ? ast.value : null;
   }
 });
-},{"../language/kinds":89,"./definition":96}],101:[function(require,module,exports){
+},{"../language/kinds":88,"./definition":95}],100:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26784,7 +26685,7 @@ function assertObjectImplementsInterface(schema, object, iface) {
     });
   });
 }
-},{"../jsutils/find":80,"../jsutils/invariant":81,"../utilities/typeComparators":118,"./definition":96,"./directives":97,"./introspection":99}],102:[function(require,module,exports){
+},{"../jsutils/find":79,"../jsutils/invariant":80,"../utilities/typeComparators":117,"./definition":95,"./directives":96,"./introspection":98}],101:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27020,7 +26921,7 @@ function getFieldDef(schema, parentType, fieldNode) {
     return parentType.getFields()[name];
   }
 }
-},{"../jsutils/find":80,"../language/kinds":89,"../type/definition":96,"../type/introspection":99,"./typeFromAST":119}],103:[function(require,module,exports){
+},{"../jsutils/find":79,"../language/kinds":88,"../type/definition":95,"../type/introspection":98,"./typeFromAST":118}],102:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27081,7 +26982,7 @@ function formatWarning(error) {
   }
   return formatted.trim();
 }
-},{}],104:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27261,7 +27162,7 @@ function astFromValue(value, type) {
  *  LICENSE file in the root directory of this source tree. An additional grant
  *  of patent rights can be found in the PATENTS file in the same directory.
  */
-},{"../jsutils/invariant":81,"../jsutils/isInvalid":82,"../jsutils/isNullish":83,"../language/kinds":89,"../type/definition":96,"../type/scalars":100,"iterall":149}],105:[function(require,module,exports){
+},{"../jsutils/invariant":80,"../jsutils/isInvalid":81,"../jsutils/isNullish":82,"../language/kinds":88,"../type/definition":95,"../type/scalars":99,"iterall":148}],104:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27744,7 +27645,7 @@ function leadingSpaces(str) {
 function cannotExecuteSchema() {
   throw new Error('Generated Schema cannot use Interface or Union types for execution.');
 }
-},{"../execution/values":77,"../jsutils/find":80,"../jsutils/invariant":81,"../jsutils/keyValMap":85,"../language/kinds":89,"../language/lexer":90,"../language/parser":92,"../type/definition":96,"../type/directives":97,"../type/introspection":99,"../type/scalars":100,"../type/schema":101,"./valueFromAST":120}],106:[function(require,module,exports){
+},{"../execution/values":76,"../jsutils/find":79,"../jsutils/invariant":80,"../jsutils/keyValMap":84,"../language/kinds":88,"../language/lexer":89,"../language/parser":91,"../type/definition":95,"../type/directives":96,"../type/introspection":98,"../type/scalars":99,"../type/schema":100,"./valueFromAST":119}],105:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28054,7 +27955,7 @@ function buildClientSchema(introspection) {
 function cannotExecuteClientSchema() {
   throw new Error('Client Schema cannot use Interface or Union types for execution.');
 }
-},{"../jsutils/invariant":81,"../jsutils/keyMap":84,"../jsutils/keyValMap":85,"../language/parser":92,"../type/definition":96,"../type/directives":97,"../type/introspection":99,"../type/scalars":100,"../type/schema":101,"./valueFromAST":120}],107:[function(require,module,exports){
+},{"../jsutils/invariant":80,"../jsutils/keyMap":83,"../jsutils/keyValMap":84,"../language/parser":91,"../type/definition":95,"../type/directives":96,"../type/introspection":98,"../type/scalars":99,"../type/schema":100,"./valueFromAST":119}],106:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28089,7 +27990,7 @@ function concatAST(asts) {
  *  LICENSE file in the root directory of this source tree. An additional grant
  *  of patent rights can be found in the PATENTS file in the same directory.
  */
-},{}],108:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28624,7 +28525,7 @@ function extendSchema(schema, documentAST) {
 function cannotExecuteExtendedSchema() {
   throw new Error('Extended Schema cannot use Interface or Union types for execution.');
 }
-},{"../error/GraphQLError":70,"../jsutils/invariant":81,"../jsutils/keyMap":84,"../jsutils/keyValMap":85,"../language/kinds":89,"../type/definition":96,"../type/directives":97,"../type/introspection":99,"../type/scalars":100,"../type/schema":101,"./buildASTSchema":105,"./valueFromAST":120}],109:[function(require,module,exports){
+},{"../error/GraphQLError":69,"../jsutils/invariant":80,"../jsutils/keyMap":83,"../jsutils/keyValMap":84,"../language/kinds":88,"../type/definition":95,"../type/directives":96,"../type/introspection":98,"../type/scalars":99,"../type/schema":100,"./buildASTSchema":104,"./valueFromAST":119}],108:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28920,7 +28821,7 @@ function findValuesRemovedFromEnums(oldSchema, newSchema) {
   });
   return valuesRemovedFromEnums;
 }
-},{"../type/definition":96,"../type/schema":101}],110:[function(require,module,exports){
+},{"../type/definition":95,"../type/schema":100}],109:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28980,7 +28881,7 @@ function findDeprecatedUsages(schema, ast) {
  *  LICENSE file in the root directory of this source tree. An additional grant
  *  of patent rights can be found in the PATENTS file in the same directory.
  */
-},{"../error/GraphQLError":70,"../language/visitor":95,"../type/definition":96,"../type/schema":101,"./TypeInfo":102}],111:[function(require,module,exports){
+},{"../error/GraphQLError":69,"../language/visitor":94,"../type/definition":95,"../type/schema":100,"./TypeInfo":101}],110:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29023,7 +28924,7 @@ function getOperationAST(documentAST, operationName) {
  *  LICENSE file in the root directory of this source tree. An additional grant
  *  of patent rights can be found in the PATENTS file in the same directory.
  */
-},{"../language/kinds":89}],112:[function(require,module,exports){
+},{"../language/kinds":88}],111:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29221,7 +29122,7 @@ Object.defineProperty(exports, 'findDeprecatedUsages', {
     return _findDeprecatedUsages.findDeprecatedUsages;
   }
 });
-},{"./TypeInfo":102,"./assertValidName":103,"./astFromValue":104,"./buildASTSchema":105,"./buildClientSchema":106,"./concatAST":107,"./extendSchema":108,"./findBreakingChanges":109,"./findDeprecatedUsages":110,"./getOperationAST":111,"./introspectionQuery":113,"./isValidJSValue":114,"./isValidLiteralValue":115,"./schemaPrinter":116,"./separateOperations":117,"./typeComparators":118,"./typeFromAST":119,"./valueFromAST":120}],113:[function(require,module,exports){
+},{"./TypeInfo":101,"./assertValidName":102,"./astFromValue":103,"./buildASTSchema":104,"./buildClientSchema":105,"./concatAST":106,"./extendSchema":107,"./findBreakingChanges":108,"./findDeprecatedUsages":109,"./getOperationAST":110,"./introspectionQuery":112,"./isValidJSValue":113,"./isValidLiteralValue":114,"./schemaPrinter":115,"./separateOperations":116,"./typeComparators":117,"./typeFromAST":118,"./valueFromAST":119}],112:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29236,7 +29137,7 @@ var introspectionQuery = exports.introspectionQuery = '\n  query IntrospectionQu
  *  LICENSE file in the root directory of this source tree. An additional grant
  *  of patent rights can be found in the PATENTS file in the same directory.
  */
-},{}],114:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29365,7 +29266,7 @@ function isValidJSValue(value, type) {
 
   return [];
 }
-},{"../jsutils/invariant":81,"../jsutils/isNullish":83,"../type/definition":96,"iterall":149}],115:[function(require,module,exports){
+},{"../jsutils/invariant":80,"../jsutils/isNullish":82,"../type/definition":95,"iterall":148}],114:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29501,7 +29402,7 @@ function isValidLiteralValue(type, valueNode) {
 
   return [];
 }
-},{"../jsutils/invariant":81,"../jsutils/isNullish":83,"../jsutils/keyMap":84,"../language/kinds":89,"../language/printer":93,"../type/definition":96}],116:[function(require,module,exports){
+},{"../jsutils/invariant":80,"../jsutils/isNullish":82,"../jsutils/keyMap":83,"../language/kinds":88,"../language/printer":92,"../type/definition":95}],115:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29786,7 +29687,7 @@ function breakLine(line, len) {
   }
   return sublines;
 }
-},{"../jsutils/invariant":81,"../jsutils/isInvalid":82,"../jsutils/isNullish":83,"../language/printer":93,"../type/definition":96,"../type/directives":97,"../type/scalars":100,"../utilities/astFromValue":104}],117:[function(require,module,exports){
+},{"../jsutils/invariant":80,"../jsutils/isInvalid":81,"../jsutils/isNullish":82,"../language/printer":92,"../type/definition":95,"../type/directives":96,"../type/scalars":99,"../utilities/astFromValue":103}],116:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29882,7 +29783,7 @@ function collectTransitiveDependencies(collected, depGraph, fromName) {
     });
   }
 }
-},{"../language/visitor":95}],118:[function(require,module,exports){
+},{"../language/visitor":94}],117:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30007,7 +29908,7 @@ function doTypesOverlap(schema, typeA, typeB) {
   // Otherwise the types do not overlap.
   return false;
 }
-},{"../type/definition":96}],119:[function(require,module,exports){
+},{"../type/definition":95}],118:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30046,7 +29947,7 @@ function typeFromAST(schema, typeNode) {
  *  LICENSE file in the root directory of this source tree. An additional grant
  *  of patent rights can be found in the PATENTS file in the same directory.
  */
-},{"../jsutils/invariant":81,"../language/kinds":89,"../type/definition":96}],120:[function(require,module,exports){
+},{"../jsutils/invariant":80,"../language/kinds":88,"../type/definition":95}],119:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30219,7 +30120,7 @@ function valueFromAST(valueNode, type, variables) {
 function isMissingVariable(valueNode, variables) {
   return valueNode.kind === Kind.VARIABLE && (!variables || (0, _isInvalid2.default)(variables[valueNode.name.value]));
 }
-},{"../jsutils/invariant":81,"../jsutils/isInvalid":82,"../jsutils/isNullish":83,"../jsutils/keyMap":84,"../language/kinds":89,"../type/definition":96}],121:[function(require,module,exports){
+},{"../jsutils/invariant":80,"../jsutils/isInvalid":81,"../jsutils/isNullish":82,"../jsutils/keyMap":83,"../language/kinds":88,"../type/definition":95}],120:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30249,7 +30150,7 @@ Object.defineProperty(exports, 'specifiedRules', {
     return _specifiedRules.specifiedRules;
   }
 });
-},{"./specifiedRules":147,"./validate":148}],122:[function(require,module,exports){
+},{"./specifiedRules":146,"./validate":147}],121:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30298,7 +30199,7 @@ function ArgumentsOfCorrectType(context) {
     }
   };
 }
-},{"../../error":72,"../../language/printer":93,"../../utilities/isValidLiteralValue":115}],123:[function(require,module,exports){
+},{"../../error":71,"../../language/printer":92,"../../utilities/isValidLiteralValue":114}],122:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30365,7 +30266,7 @@ function DefaultValuesOfCorrectType(context) {
     }
   };
 }
-},{"../../error":72,"../../language/printer":93,"../../type/definition":96,"../../utilities/isValidLiteralValue":115}],124:[function(require,module,exports){
+},{"../../error":71,"../../language/printer":92,"../../type/definition":95,"../../utilities/isValidLiteralValue":114}],123:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30494,7 +30395,7 @@ function getSuggestedFieldNames(schema, type, fieldName) {
   // Otherwise, must be a Union type, which does not define fields.
   return [];
 }
-},{"../../error":72,"../../jsutils/quotedOrList":86,"../../jsutils/suggestionList":87,"../../type/definition":96}],125:[function(require,module,exports){
+},{"../../error":71,"../../jsutils/quotedOrList":85,"../../jsutils/suggestionList":86,"../../type/definition":95}],124:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30553,7 +30454,7 @@ function FragmentsOnCompositeTypes(context) {
     }
   };
 }
-},{"../../error":72,"../../language/printer":93,"../../type/definition":96,"../../utilities/typeFromAST":119}],126:[function(require,module,exports){
+},{"../../error":71,"../../language/printer":92,"../../type/definition":95,"../../utilities/typeFromAST":118}],125:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30649,7 +30550,7 @@ function KnownArgumentNames(context) {
     }
   };
 }
-},{"../../error":72,"../../jsutils/find":80,"../../jsutils/invariant":81,"../../jsutils/quotedOrList":86,"../../jsutils/suggestionList":87,"../../language/kinds":89}],127:[function(require,module,exports){
+},{"../../error":71,"../../jsutils/find":79,"../../jsutils/invariant":80,"../../jsutils/quotedOrList":85,"../../jsutils/suggestionList":86,"../../language/kinds":88}],126:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30757,7 +30658,7 @@ function getDirectiveLocationForASTPath(ancestors) {
       return parentNode.kind === _kinds.INPUT_OBJECT_TYPE_DEFINITION ? _directives.DirectiveLocation.INPUT_FIELD_DEFINITION : _directives.DirectiveLocation.ARGUMENT_DEFINITION;
   }
 }
-},{"../../error":72,"../../jsutils/find":80,"../../language/kinds":89,"../../type/directives":97}],128:[function(require,module,exports){
+},{"../../error":71,"../../jsutils/find":79,"../../language/kinds":88,"../../type/directives":96}],127:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30798,7 +30699,7 @@ function KnownFragmentNames(context) {
     }
   };
 }
-},{"../../error":72}],129:[function(require,module,exports){
+},{"../../error":71}],128:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30869,7 +30770,7 @@ function KnownTypeNames(context) {
     }
   };
 }
-},{"../../error":72,"../../jsutils/quotedOrList":86,"../../jsutils/suggestionList":87}],130:[function(require,module,exports){
+},{"../../error":71,"../../jsutils/quotedOrList":85,"../../jsutils/suggestionList":86}],129:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30917,7 +30818,7 @@ function LoneAnonymousOperation(context) {
     }
   };
 }
-},{"../../error":72,"../../language/kinds":89}],131:[function(require,module,exports){
+},{"../../error":71,"../../language/kinds":88}],130:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31004,7 +30905,7 @@ function NoFragmentCycles(context) {
     spreadPathIndexByName[fragmentName] = undefined;
   }
 }
-},{"../../error":72}],132:[function(require,module,exports){
+},{"../../error":71}],131:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31060,7 +30961,7 @@ function NoUndefinedVariables(context) {
     }
   };
 }
-},{"../../error":72}],133:[function(require,module,exports){
+},{"../../error":71}],132:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31123,7 +31024,7 @@ function NoUnusedFragments(context) {
     }
   };
 }
-},{"../../error":72}],134:[function(require,module,exports){
+},{"../../error":71}],133:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31185,7 +31086,7 @@ function NoUnusedVariables(context) {
     }
   };
 }
-},{"../../error":72}],135:[function(require,module,exports){
+},{"../../error":71}],134:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31739,7 +31640,7 @@ function _pairSetAdd(data, a, b, areMutuallyExclusive) {
   }
   map[b] = areMutuallyExclusive;
 }
-},{"../../error":72,"../../jsutils/find":80,"../../language/kinds":89,"../../language/printer":93,"../../type/definition":96,"../../utilities/typeFromAST":119}],136:[function(require,module,exports){
+},{"../../error":71,"../../jsutils/find":79,"../../language/kinds":88,"../../language/printer":92,"../../type/definition":95,"../../utilities/typeFromAST":118}],135:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31803,7 +31704,7 @@ function getFragmentType(context, name) {
   var frag = context.getFragment(name);
   return frag && (0, _typeFromAST.typeFromAST)(context.getSchema(), frag.typeCondition);
 }
-},{"../../error":72,"../../utilities/typeComparators":118,"../../utilities/typeFromAST":119}],137:[function(require,module,exports){
+},{"../../error":71,"../../utilities/typeComparators":117,"../../utilities/typeFromAST":118}],136:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31891,7 +31792,7 @@ function ProvidedNonNullArguments(context) {
     }
   };
 }
-},{"../../error":72,"../../jsutils/keyMap":84,"../../type/definition":96}],138:[function(require,module,exports){
+},{"../../error":71,"../../jsutils/keyMap":83,"../../type/definition":95}],137:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31943,7 +31844,7 @@ function ScalarLeafs(context) {
     }
   };
 }
-},{"../../error":72,"../../type/definition":96}],139:[function(require,module,exports){
+},{"../../error":71,"../../type/definition":95}],138:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31993,7 +31894,7 @@ function UniqueArgumentNames(context) {
     }
   };
 }
-},{"../../error":72}],140:[function(require,module,exports){
+},{"../../error":71}],139:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32045,7 +31946,7 @@ function UniqueDirectivesPerLocation(context) {
     }
   };
 }
-},{"../../error":72}],141:[function(require,module,exports){
+},{"../../error":71}],140:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32091,7 +31992,7 @@ function UniqueFragmentNames(context) {
     }
   };
 }
-},{"../../error":72}],142:[function(require,module,exports){
+},{"../../error":71}],141:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32146,7 +32047,7 @@ function UniqueInputFieldNames(context) {
     }
   };
 }
-},{"../../error":72}],143:[function(require,module,exports){
+},{"../../error":71}],142:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32195,7 +32096,7 @@ function UniqueOperationNames(context) {
     }
   };
 }
-},{"../../error":72}],144:[function(require,module,exports){
+},{"../../error":71}],143:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32241,7 +32142,7 @@ function UniqueVariableNames(context) {
     }
   };
 }
-},{"../../error":72}],145:[function(require,module,exports){
+},{"../../error":71}],144:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32291,7 +32192,7 @@ function VariablesAreInputTypes(context) {
     }
   };
 }
-},{"../../error":72,"../../language/printer":93,"../../type/definition":96,"../../utilities/typeFromAST":119}],146:[function(require,module,exports){
+},{"../../error":71,"../../language/printer":92,"../../type/definition":95,"../../utilities/typeFromAST":118}],145:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32367,7 +32268,7 @@ function VariablesInAllowedPosition(context) {
 function effectiveType(varType, varDef) {
   return !varDef.defaultValue || varType instanceof _definition.GraphQLNonNull ? varType : new _definition.GraphQLNonNull(varType);
 }
-},{"../../error":72,"../../type/definition":96,"../../utilities/typeComparators":118,"../../utilities/typeFromAST":119}],147:[function(require,module,exports){
+},{"../../error":71,"../../type/definition":95,"../../utilities/typeComparators":117,"../../utilities/typeFromAST":118}],146:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32511,7 +32412,7 @@ var specifiedRules = exports.specifiedRules = [_UniqueOperationNames.UniqueOpera
  */
 
 // Spec Section: "Operation Name Uniqueness"
-},{"./rules/ArgumentsOfCorrectType":122,"./rules/DefaultValuesOfCorrectType":123,"./rules/FieldsOnCorrectType":124,"./rules/FragmentsOnCompositeTypes":125,"./rules/KnownArgumentNames":126,"./rules/KnownDirectives":127,"./rules/KnownFragmentNames":128,"./rules/KnownTypeNames":129,"./rules/LoneAnonymousOperation":130,"./rules/NoFragmentCycles":131,"./rules/NoUndefinedVariables":132,"./rules/NoUnusedFragments":133,"./rules/NoUnusedVariables":134,"./rules/OverlappingFieldsCanBeMerged":135,"./rules/PossibleFragmentSpreads":136,"./rules/ProvidedNonNullArguments":137,"./rules/ScalarLeafs":138,"./rules/UniqueArgumentNames":139,"./rules/UniqueDirectivesPerLocation":140,"./rules/UniqueFragmentNames":141,"./rules/UniqueInputFieldNames":142,"./rules/UniqueOperationNames":143,"./rules/UniqueVariableNames":144,"./rules/VariablesAreInputTypes":145,"./rules/VariablesInAllowedPosition":146}],148:[function(require,module,exports){
+},{"./rules/ArgumentsOfCorrectType":121,"./rules/DefaultValuesOfCorrectType":122,"./rules/FieldsOnCorrectType":123,"./rules/FragmentsOnCompositeTypes":124,"./rules/KnownArgumentNames":125,"./rules/KnownDirectives":126,"./rules/KnownFragmentNames":127,"./rules/KnownTypeNames":128,"./rules/LoneAnonymousOperation":129,"./rules/NoFragmentCycles":130,"./rules/NoUndefinedVariables":131,"./rules/NoUnusedFragments":132,"./rules/NoUnusedVariables":133,"./rules/OverlappingFieldsCanBeMerged":134,"./rules/PossibleFragmentSpreads":135,"./rules/ProvidedNonNullArguments":136,"./rules/ScalarLeafs":137,"./rules/UniqueArgumentNames":138,"./rules/UniqueDirectivesPerLocation":139,"./rules/UniqueFragmentNames":140,"./rules/UniqueInputFieldNames":141,"./rules/UniqueOperationNames":142,"./rules/UniqueVariableNames":143,"./rules/VariablesAreInputTypes":144,"./rules/VariablesInAllowedPosition":145}],147:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32747,7 +32648,7 @@ var ValidationContext = exports.ValidationContext = function () {
 
   return ValidationContext;
 }();
-},{"../error":72,"../jsutils/invariant":81,"../language/kinds":89,"../language/visitor":95,"../type/schema":101,"../utilities/TypeInfo":102,"./specifiedRules":147}],149:[function(require,module,exports){
+},{"../error":71,"../jsutils/invariant":80,"../language/kinds":88,"../language/visitor":94,"../type/schema":100,"../utilities/TypeInfo":101,"./specifiedRules":146}],148:[function(require,module,exports){
 /**
  * Copyright (c) 2016, Lee Byron
  * All rights reserved.
@@ -33108,7 +33009,7 @@ ArrayLikeIterator.prototype.next = function () {
   return { value: this._o[this._i++], done: false }
 }
 
-},{}],150:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 (function (global){
 /**
  * marked - a markdown parser
@@ -34398,5 +34299,5 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 }());
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[22])(22)
+},{}]},{},[21])(21)
 });

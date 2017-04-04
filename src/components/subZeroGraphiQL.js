@@ -28,15 +28,6 @@ export class subZeroGraphiQL extends React.Component {
       this.props.onSchemaTypeChange(e.target.value);
     }
   }
-
-  handleClickPrettifyButton(event) {
-    const editor = this.graphiql.getQueryEditor();
-    const currentText = editor.getValue();
-    const { parse, print } = require('graphql');
-    const prettyText = print(parse(currentText));
-    editor.setValue(prettyText);
-  }
-
   render() {
     return (
       <GraphiQL
@@ -50,18 +41,13 @@ export class subZeroGraphiQL extends React.Component {
         onEditVariables={this.props.onEditVariables}
         onEditOperationName={this.props.onEditOperationName}
         onToggleDocs={this.props.onToggleDocs}>
-        <GraphiQL.Toolbar>
-          <GraphiQL.Button
-            onClick={this.handleClickPrettifyButton}
-            label="Prettify"
-            title="Prettify Query"
-          />
+        <GraphiQL.Footer>
           <select onChange={this._onSchemaTypeChange} value={this.state.schema_type}>
             <option value="simple">Simple Schema</option>
             <option value="relay">Relay Schema</option>
           </select>
           <input className="auth-token" onChange={this._onAuthTokenChange} value={this.state.auth_token} placeholder="JWT value" />
-        </GraphiQL.Toolbar>
+        </GraphiQL.Footer>
       </GraphiQL>
     );
   }

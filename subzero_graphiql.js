@@ -3972,6 +3972,7 @@ var subZeroGraphiQL = exports.subZeroGraphiQL = function (_React$Component) {
           query: this.props.query,
           variables: this.props.variables,
           operationName: this.props.operationName,
+          defaultQuery: this.props.defaultQuery,
           onEditQuery: this.props.onEditQuery,
           onEditVariables: this.props.onEditVariables,
           onEditOperationName: this.props.onEditOperationName,
@@ -25620,31 +25621,23 @@ var GraphQLEnumType /* <T> */ = exports.GraphQLEnumType = function () {
   };
 
   GraphQLEnumType.prototype._getValueLookup = function _getValueLookup() {
-    var _this = this;
-
     if (!this._valueLookup) {
-      (function () {
-        var lookup = new Map();
-        _this.getValues().forEach(function (value) {
-          lookup.set(value.value, value);
-        });
-        _this._valueLookup = lookup;
-      })();
+      var lookup = new Map();
+      this.getValues().forEach(function (value) {
+        lookup.set(value.value, value);
+      });
+      this._valueLookup = lookup;
     }
     return this._valueLookup;
   };
 
   GraphQLEnumType.prototype._getNameLookup = function _getNameLookup() {
-    var _this2 = this;
-
     if (!this._nameLookup) {
-      (function () {
-        var lookup = Object.create(null);
-        _this2.getValues().forEach(function (value) {
-          lookup[value.name] = value;
-        });
-        _this2._nameLookup = lookup;
-      })();
+      var lookup = Object.create(null);
+      this.getValues().forEach(function (value) {
+        lookup[value.name] = value;
+      });
+      this._nameLookup = lookup;
     }
     return this._nameLookup;
   };
@@ -25717,7 +25710,7 @@ var GraphQLInputObjectType = exports.GraphQLInputObjectType = function () {
   };
 
   GraphQLInputObjectType.prototype._defineFieldMap = function _defineFieldMap() {
-    var _this3 = this;
+    var _this = this;
 
     var fieldMap = resolveThunk(this._typeConfig.fields);
     (0, _invariant2.default)(isPlainObj(fieldMap), this.name + ' fields must be an object with field names as keys or a ' + 'function which returns such an object.');
@@ -25729,8 +25722,8 @@ var GraphQLInputObjectType = exports.GraphQLInputObjectType = function () {
       var field = _extends({}, fieldMap[fieldName], {
         name: fieldName
       });
-      (0, _invariant2.default)(isInputType(field.type), _this3.name + '.' + fieldName + ' field type must be Input Type but ' + ('got: ' + String(field.type) + '.'));
-      (0, _invariant2.default)(field.resolve == null, _this3.name + '.' + fieldName + ' field type has a resolve property, but ' + 'Input Types cannot define resolvers.');
+      (0, _invariant2.default)(isInputType(field.type), _this.name + '.' + fieldName + ' field type must be Input Type but ' + ('got: ' + String(field.type) + '.'));
+      (0, _invariant2.default)(field.resolve == null, _this.name + '.' + fieldName + ' field type has a resolve property, but ' + 'Input Types cannot define resolvers.');
       resultFieldMap[fieldName] = field;
     });
     return resultFieldMap;
@@ -26529,22 +26522,16 @@ var __Type = exports.__Type = new _definition.GraphQLObjectType({
           var includeDeprecated = _ref.includeDeprecated;
 
           if (type instanceof _definition.GraphQLObjectType || type instanceof _definition.GraphQLInterfaceType) {
-            var _ret = function () {
-              var fieldMap = type.getFields();
-              var fields = Object.keys(fieldMap).map(function (fieldName) {
-                return fieldMap[fieldName];
+            var fieldMap = type.getFields();
+            var fields = Object.keys(fieldMap).map(function (fieldName) {
+              return fieldMap[fieldName];
+            });
+            if (!includeDeprecated) {
+              fields = fields.filter(function (field) {
+                return !field.deprecationReason;
               });
-              if (!includeDeprecated) {
-                fields = fields.filter(function (field) {
-                  return !field.deprecationReason;
-                });
-              }
-              return {
-                v: fields
-              };
-            }();
-
-            if (typeof _ret === "object") return _ret.v;
+            }
+            return fields;
           }
           return null;
         }
@@ -26590,16 +26577,10 @@ var __Type = exports.__Type = new _definition.GraphQLObjectType({
         type: new _definition.GraphQLList(new _definition.GraphQLNonNull(__InputValue)),
         resolve: function resolve(type) {
           if (type instanceof _definition.GraphQLInputObjectType) {
-            var _ret2 = function () {
-              var fieldMap = type.getFields();
-              return {
-                v: Object.keys(fieldMap).map(function (fieldName) {
-                  return fieldMap[fieldName];
-                })
-              };
-            }();
-
-            if (typeof _ret2 === "object") return _ret2.v;
+            var fieldMap = type.getFields();
+            return Object.keys(fieldMap).map(function (fieldName) {
+              return fieldMap[fieldName];
+            });
           }
         }
       },
@@ -27073,30 +27054,26 @@ function typeMapReducer(map, type) {
   }
 
   if (type instanceof _definition.GraphQLObjectType || type instanceof _definition.GraphQLInterfaceType) {
-    (function () {
-      var fieldMap = type.getFields();
-      Object.keys(fieldMap).forEach(function (fieldName) {
-        var field = fieldMap[fieldName];
+    var fieldMap = type.getFields();
+    Object.keys(fieldMap).forEach(function (fieldName) {
+      var field = fieldMap[fieldName];
 
-        if (field.args) {
-          var fieldArgTypes = field.args.map(function (arg) {
-            return arg.type;
-          });
-          reducedMap = fieldArgTypes.reduce(typeMapReducer, reducedMap);
-        }
-        reducedMap = typeMapReducer(reducedMap, field.type);
-      });
-    })();
+      if (field.args) {
+        var fieldArgTypes = field.args.map(function (arg) {
+          return arg.type;
+        });
+        reducedMap = fieldArgTypes.reduce(typeMapReducer, reducedMap);
+      }
+      reducedMap = typeMapReducer(reducedMap, field.type);
+    });
   }
 
   if (type instanceof _definition.GraphQLInputObjectType) {
-    (function () {
-      var fieldMap = type.getFields();
-      Object.keys(fieldMap).forEach(function (fieldName) {
-        var field = fieldMap[fieldName];
-        reducedMap = typeMapReducer(reducedMap, field.type);
-      });
-    })();
+    var _fieldMap = type.getFields();
+    Object.keys(_fieldMap).forEach(function (fieldName) {
+      var field = _fieldMap[fieldName];
+      reducedMap = typeMapReducer(reducedMap, field.type);
+    });
   }
 
   return reducedMap;
@@ -27514,62 +27491,40 @@ function astFromValue(value, type) {
   // Convert JavaScript array to GraphQL list. If the GraphQLType is a list, but
   // the value is not an array, convert the value using the list's item type.
   if (type instanceof _definition.GraphQLList) {
-    var _ret = function () {
-      var itemType = type.ofType;
-      if ((0, _iterall.isCollection)(_value)) {
-        var _ret2 = function () {
-          var valuesNodes = [];
-          (0, _iterall.forEach)(_value, function (item) {
-            var itemNode = astFromValue(item, itemType);
-            if (itemNode) {
-              valuesNodes.push(itemNode);
-            }
-          });
-          return {
-            v: {
-              v: { kind: _kinds.LIST, values: valuesNodes }
-            }
-          };
-        }();
-
-        if (typeof _ret2 === "object") return _ret2.v;
-      }
-      return {
-        v: astFromValue(_value, itemType)
-      };
-    }();
-
-    if (typeof _ret === "object") return _ret.v;
+    var itemType = type.ofType;
+    if ((0, _iterall.isCollection)(_value)) {
+      var valuesNodes = [];
+      (0, _iterall.forEach)(_value, function (item) {
+        var itemNode = astFromValue(item, itemType);
+        if (itemNode) {
+          valuesNodes.push(itemNode);
+        }
+      });
+      return { kind: _kinds.LIST, values: valuesNodes };
+    }
+    return astFromValue(_value, itemType);
   }
 
   // Populate the fields of the input object by creating ASTs from each value
   // in the JavaScript object according to the fields in the input type.
   if (type instanceof _definition.GraphQLInputObjectType) {
-    var _ret3 = function () {
-      if (_value === null || typeof _value !== 'object') {
-        return {
-          v: null
-        };
+    if (_value === null || typeof _value !== 'object') {
+      return null;
+    }
+    var fields = type.getFields();
+    var fieldNodes = [];
+    Object.keys(fields).forEach(function (fieldName) {
+      var fieldType = fields[fieldName].type;
+      var fieldValue = astFromValue(_value[fieldName], fieldType);
+      if (fieldValue) {
+        fieldNodes.push({
+          kind: _kinds.OBJECT_FIELD,
+          name: { kind: _kinds.NAME, value: fieldName },
+          value: fieldValue
+        });
       }
-      var fields = type.getFields();
-      var fieldNodes = [];
-      Object.keys(fields).forEach(function (fieldName) {
-        var fieldType = fields[fieldName].type;
-        var fieldValue = astFromValue(_value[fieldName], fieldType);
-        if (fieldValue) {
-          fieldNodes.push({
-            kind: _kinds.OBJECT_FIELD,
-            name: { kind: _kinds.NAME, value: fieldName },
-            value: fieldValue
-          });
-        }
-      });
-      return {
-        v: { kind: _kinds.OBJECT, fields: fieldNodes }
-      };
-    }();
-
-    if (typeof _ret3 === "object") return _ret3.v;
+    });
+    return { kind: _kinds.OBJECT, fields: fieldNodes };
   }
 
   (0, _invariant2.default)(type instanceof _definition.GraphQLScalarType || type instanceof _definition.GraphQLEnumType, 'Must provide Input Type, cannot use: ' + String(type));
@@ -29125,15 +29080,22 @@ function findArgChanges(oldSchema, newSchema) {
         });
         var newArgDef = newArgs[newTypeArgIndex];
 
+        var oldArgTypeName = (0, _definition.getNamedType)(oldArgDef.type);
+        var newArgTypeName = newArgDef ? (0, _definition.getNamedType)(newArgDef.type) : null;
+
+        if (!oldArgTypeName) {
+          return;
+        }
+
         // Arg not present
-        if (newTypeArgIndex < 0) {
+        if (!newArgTypeName) {
           breakingChanges.push({
             type: BreakingChangeType.ARG_REMOVED,
             description: oldType.name + '.' + fieldName + ' arg ' + (oldArgDef.name + ' was removed')
           });
 
           // Arg changed type in a breaking way
-        } else if (oldArgDef.type !== newArgDef.type && (0, _definition.getNullableType)(oldArgDef.type) !== newArgDef.type) {
+        } else if (oldArgTypeName.name !== newArgTypeName.name) {
           breakingChanges.push({
             type: BreakingChangeType.ARG_CHANGED_KIND,
             description: oldType.name + '.' + fieldName + ' arg ' + (oldArgDef.name + ' has changed type from ') + (oldArgDef.type.toString() + ' to ' + newArgDef.type.toString())
@@ -29649,66 +29611,44 @@ function isValidJSValue(value, type) {
 
   // Lists accept a non-list value as a list of one.
   if (type instanceof _definition.GraphQLList) {
-    var _ret = function () {
-      var itemType = type.ofType;
-      if ((0, _iterall.isCollection)(value)) {
-        var _ret2 = function () {
-          var errors = [];
-          (0, _iterall.forEach)(value, function (item, index) {
-            errors.push.apply(errors, isValidJSValue(item, itemType).map(function (error) {
-              return 'In element #' + index + ': ' + error;
-            }));
-          });
-          return {
-            v: {
-              v: errors
-            }
-          };
-        }();
-
-        if (typeof _ret2 === "object") return _ret2.v;
-      }
-      return {
-        v: isValidJSValue(value, itemType)
-      };
-    }();
-
-    if (typeof _ret === "object") return _ret.v;
+    var itemType = type.ofType;
+    if ((0, _iterall.isCollection)(value)) {
+      var errors = [];
+      (0, _iterall.forEach)(value, function (item, index) {
+        errors.push.apply(errors, isValidJSValue(item, itemType).map(function (error) {
+          return 'In element #' + index + ': ' + error;
+        }));
+      });
+      return errors;
+    }
+    return isValidJSValue(value, itemType);
   }
 
   // Input objects check each defined field.
   if (type instanceof _definition.GraphQLInputObjectType) {
-    var _ret3 = function () {
-      if (typeof value !== 'object' || value === null) {
-        return {
-          v: ['Expected "' + type.name + '", found not an object.']
-        };
+    if (typeof value !== 'object' || value === null) {
+      return ['Expected "' + type.name + '", found not an object.'];
+    }
+    var fields = type.getFields();
+
+    var _errors = [];
+
+    // Ensure every provided field is defined.
+    Object.keys(value).forEach(function (providedField) {
+      if (!fields[providedField]) {
+        _errors.push('In field "' + providedField + '": Unknown field.');
       }
-      var fields = type.getFields();
+    });
 
-      var errors = [];
+    // Ensure every defined field is valid.
+    Object.keys(fields).forEach(function (fieldName) {
+      var newErrors = isValidJSValue(value[fieldName], fields[fieldName].type);
+      _errors.push.apply(_errors, newErrors.map(function (error) {
+        return 'In field "' + fieldName + '": ' + error;
+      }));
+    });
 
-      // Ensure every provided field is defined.
-      Object.keys(value).forEach(function (providedField) {
-        if (!fields[providedField]) {
-          errors.push('In field "' + providedField + '": Unknown field.');
-        }
-      });
-
-      // Ensure every defined field is valid.
-      Object.keys(fields).forEach(function (fieldName) {
-        var newErrors = isValidJSValue(value[fieldName], fields[fieldName].type);
-        errors.push.apply(errors, newErrors.map(function (error) {
-          return 'In field "' + fieldName + '": ' + error;
-        }));
-      });
-
-      return {
-        v: errors
-      };
-    }();
-
-    if (typeof _ret3 === "object") return _ret3.v;
+    return _errors;
   }
 
   (0, _invariant2.default)(type instanceof _definition.GraphQLScalarType || type instanceof _definition.GraphQLEnumType, 'Must be input type');
@@ -29792,63 +29732,47 @@ function isValidLiteralValue(type, valueNode) {
 
   // Lists accept a non-list value as a list of one.
   if (type instanceof _definition.GraphQLList) {
-    var _ret = function () {
-      var itemType = type.ofType;
-      if (valueNode.kind === _kinds.LIST) {
-        return {
-          v: valueNode.values.reduce(function (acc, item, index) {
-            var errors = isValidLiteralValue(itemType, item);
-            return acc.concat(errors.map(function (error) {
-              return 'In element #' + index + ': ' + error;
-            }));
-          }, [])
-        };
-      }
-      return {
-        v: isValidLiteralValue(itemType, valueNode)
-      };
-    }();
-
-    if (typeof _ret === "object") return _ret.v;
+    var itemType = type.ofType;
+    if (valueNode.kind === _kinds.LIST) {
+      return valueNode.values.reduce(function (acc, item, index) {
+        var errors = isValidLiteralValue(itemType, item);
+        return acc.concat(errors.map(function (error) {
+          return 'In element #' + index + ': ' + error;
+        }));
+      }, []);
+    }
+    return isValidLiteralValue(itemType, valueNode);
   }
 
   // Input objects check each defined field and look for undefined fields.
   if (type instanceof _definition.GraphQLInputObjectType) {
-    var _ret2 = function () {
-      if (valueNode.kind !== _kinds.OBJECT) {
-        return {
-          v: ['Expected "' + type.name + '", found not an object.']
-        };
+    if (valueNode.kind !== _kinds.OBJECT) {
+      return ['Expected "' + type.name + '", found not an object.'];
+    }
+    var fields = type.getFields();
+
+    var errors = [];
+
+    // Ensure every provided field is defined.
+    var fieldNodes = valueNode.fields;
+    fieldNodes.forEach(function (providedFieldNode) {
+      if (!fields[providedFieldNode.name.value]) {
+        errors.push('In field "' + providedFieldNode.name.value + '": Unknown field.');
       }
-      var fields = type.getFields();
+    });
 
-      var errors = [];
+    // Ensure every defined field is valid.
+    var fieldNodeMap = (0, _keyMap2.default)(fieldNodes, function (fieldNode) {
+      return fieldNode.name.value;
+    });
+    Object.keys(fields).forEach(function (fieldName) {
+      var result = isValidLiteralValue(fields[fieldName].type, fieldNodeMap[fieldName] && fieldNodeMap[fieldName].value);
+      errors.push.apply(errors, result.map(function (error) {
+        return 'In field "' + fieldName + '": ' + error;
+      }));
+    });
 
-      // Ensure every provided field is defined.
-      var fieldNodes = valueNode.fields;
-      fieldNodes.forEach(function (providedFieldNode) {
-        if (!fields[providedFieldNode.name.value]) {
-          errors.push('In field "' + providedFieldNode.name.value + '": Unknown field.');
-        }
-      });
-
-      // Ensure every defined field is valid.
-      var fieldNodeMap = (0, _keyMap2.default)(fieldNodes, function (fieldNode) {
-        return fieldNode.name.value;
-      });
-      Object.keys(fields).forEach(function (fieldName) {
-        var result = isValidLiteralValue(fields[fieldName].type, fieldNodeMap[fieldName] && fieldNodeMap[fieldName].value);
-        errors.push.apply(errors, result.map(function (error) {
-          return 'In field "' + fieldName + '": ' + error;
-        }));
-      });
-
-      return {
-        v: errors
-      };
-    }();
-
-    if (typeof _ret2 === "object") return _ret2.v;
+    return errors;
   }
 
   (0, _invariant2.default)(type instanceof _definition.GraphQLScalarType || type instanceof _definition.GraphQLEnumType, 'Must be input type');
@@ -30807,36 +30731,30 @@ function FieldsOnCorrectType(context) {
  */
 function getSuggestedTypeNames(schema, type, fieldName) {
   if (type instanceof _definition.GraphQLInterfaceType || type instanceof _definition.GraphQLUnionType) {
-    var _ret = function () {
-      var suggestedObjectTypes = [];
-      var interfaceUsageCount = Object.create(null);
-      schema.getPossibleTypes(type).forEach(function (possibleType) {
-        if (!possibleType.getFields()[fieldName]) {
+    var suggestedObjectTypes = [];
+    var interfaceUsageCount = Object.create(null);
+    schema.getPossibleTypes(type).forEach(function (possibleType) {
+      if (!possibleType.getFields()[fieldName]) {
+        return;
+      }
+      // This object type defines this field.
+      suggestedObjectTypes.push(possibleType.name);
+      possibleType.getInterfaces().forEach(function (possibleInterface) {
+        if (!possibleInterface.getFields()[fieldName]) {
           return;
         }
-        // This object type defines this field.
-        suggestedObjectTypes.push(possibleType.name);
-        possibleType.getInterfaces().forEach(function (possibleInterface) {
-          if (!possibleInterface.getFields()[fieldName]) {
-            return;
-          }
-          // This interface type defines this field.
-          interfaceUsageCount[possibleInterface.name] = (interfaceUsageCount[possibleInterface.name] || 0) + 1;
-        });
+        // This interface type defines this field.
+        interfaceUsageCount[possibleInterface.name] = (interfaceUsageCount[possibleInterface.name] || 0) + 1;
       });
+    });
 
-      // Suggest interface types based on how common they are.
-      var suggestedInterfaceTypes = Object.keys(interfaceUsageCount).sort(function (a, b) {
-        return interfaceUsageCount[b] - interfaceUsageCount[a];
-      });
+    // Suggest interface types based on how common they are.
+    var suggestedInterfaceTypes = Object.keys(interfaceUsageCount).sort(function (a, b) {
+      return interfaceUsageCount[b] - interfaceUsageCount[a];
+    });
 
-      // Suggest both interface and object types.
-      return {
-        v: suggestedInterfaceTypes.concat(suggestedObjectTypes)
-      };
-    }();
-
-    if (typeof _ret === "object") return _ret.v;
+    // Suggest both interface and object types.
+    return suggestedInterfaceTypes.concat(suggestedObjectTypes);
   }
 
   // Otherwise, must be an Object type, which does not have possible fields.
@@ -32391,17 +32309,15 @@ function UniqueDirectivesPerLocation(context) {
     // defines any directives.
     enter: function enter(node) {
       if (node.directives) {
-        (function () {
-          var knownDirectives = Object.create(null);
-          node.directives.forEach(function (directive) {
-            var directiveName = directive.name.value;
-            if (knownDirectives[directiveName]) {
-              context.reportError(new _error.GraphQLError(duplicateDirectiveMessage(directiveName), [knownDirectives[directiveName], directive]));
-            } else {
-              knownDirectives[directiveName] = directive;
-            }
-          });
-        })();
+        var knownDirectives = Object.create(null);
+        node.directives.forEach(function (directive) {
+          var directiveName = directive.name.value;
+          if (knownDirectives[directiveName]) {
+            context.reportError(new _error.GraphQLError(duplicateDirectiveMessage(directiveName), [knownDirectives[directiveName], directive]));
+          } else {
+            knownDirectives[directiveName] = directive;
+          }
+        });
       }
     }
   };
@@ -33047,24 +32963,20 @@ var ValidationContext = exports.ValidationContext = function () {
   };
 
   ValidationContext.prototype.getVariableUsages = function getVariableUsages(node) {
-    var _this = this;
-
     var usages = this._variableUsages.get(node);
     if (!usages) {
-      (function () {
-        var newUsages = [];
-        var typeInfo = new _TypeInfo.TypeInfo(_this._schema);
-        (0, _visitor.visit)(node, (0, _visitor.visitWithTypeInfo)(typeInfo, {
-          VariableDefinition: function VariableDefinition() {
-            return false;
-          },
-          Variable: function Variable(variable) {
-            newUsages.push({ node: variable, type: typeInfo.getInputType() });
-          }
-        }));
-        usages = newUsages;
-        _this._variableUsages.set(node, usages);
-      })();
+      var newUsages = [];
+      var typeInfo = new _TypeInfo.TypeInfo(this._schema);
+      (0, _visitor.visit)(node, (0, _visitor.visitWithTypeInfo)(typeInfo, {
+        VariableDefinition: function VariableDefinition() {
+          return false;
+        },
+        Variable: function Variable(variable) {
+          newUsages.push({ node: variable, type: typeInfo.getInputType() });
+        }
+      }));
+      usages = newUsages;
+      this._variableUsages.set(node, usages);
     }
     return usages;
   };

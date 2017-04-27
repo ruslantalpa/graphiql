@@ -37,6 +37,7 @@ export class subZeroGraphiQL extends React.Component {
         query={this.props.query}
         variables={this.props.variables}
         operationName={this.props.operationName}
+        defaultQuery={this.props.defaultQuery}
         onEditQuery={this.props.onEditQuery}
         onEditVariables={this.props.onEditVariables}
         onEditOperationName={this.props.onEditOperationName}

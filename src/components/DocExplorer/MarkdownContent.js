@@ -6,14 +6,15 @@
  *  LICENSE file in the root directory of this source tree.
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Marked from 'marked';
 
 export default class MarkdownContent extends React.Component {
   static propTypes = {
     markdown: PropTypes.string,
     className: PropTypes.string,
-  }
+  };
 
   shouldComponentUpdate(nextProps) {
     return this.props.markdown !== nextProps.markdown;

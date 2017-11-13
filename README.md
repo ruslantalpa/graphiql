@@ -174,7 +174,7 @@ class CustomGraphiQL extends React.Component {
 
   render() {
     return (
-      <GraphiQL ref={c => { this.graphiql = c; }} ...this.state>
+      <GraphiQL ref={c => { this.graphiql = c; }} {...this.state}>
         <GraphiQL.Logo>
           Custom Logo
         </GraphiQL.Logo>
@@ -184,7 +184,7 @@ class CustomGraphiQL extends React.Component {
           <GraphiQL.Button
             onClick={this.handleClickPrettifyButton}
             label="Prettify"
-            title="Prettify Query"
+            title="Prettify Query (Shift-Ctrl-P)"
           />
 
           // Some other possible toolbar items
@@ -216,7 +216,7 @@ In order to theme the editor portions of the interface, you can supply a `editor
 
 // In your GraphiQL JSX
 <GraphiQL
-  editorTheme="solarized"
+  editorTheme="solarized light"
 />
 ```
 

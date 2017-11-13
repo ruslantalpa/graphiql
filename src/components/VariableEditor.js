@@ -6,10 +6,10 @@
  *  LICENSE file in the root directory of this source tree.
  */
 
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import onHasCompletion from '../utility/onHasCompletion';
-
 
 /**
  * VariableEditor
@@ -21,6 +21,7 @@ import onHasCompletion from '../utility/onHasCompletion';
  *   - variableToType: A mapping of variable name to GraphQLType.
  *   - value: The text of the editor.
  *   - onEdit: A function called when the editor changes, given the edited text.
+ *   - readOnly: Turns the editor to read-only mode.
  *
  */
 export class VariableEditor extends React.Component {
@@ -28,10 +29,12 @@ export class VariableEditor extends React.Component {
     variableToType: PropTypes.object,
     value: PropTypes.string,
     onEdit: PropTypes.func,
+    readOnly: PropTypes.bool,
     onHintInformationRender: PropTypes.func,
+    onPrettifyQuery: PropTypes.func,
     onRunQuery: PropTypes.func,
     editorTheme: PropTypes.string,
-  }
+  };
 
   constructor(props) {
     super();
@@ -52,6 +55,9 @@ export class VariableEditor extends React.Component {
     require('codemirror/addon/fold/brace-fold');
     require('codemirror/addon/fold/foldgutter');
     require('codemirror/addon/lint/lint');
+    require('codemirror/addon/search/searchcursor');
+    require('codemirror/addon/search/jump-to-line');
+    require('codemirror/addon/dialog/dialog');
     require('codemirror/keymap/sublime');
     require('codemirror-graphql/variables/hint');
     require('codemirror-graphql/variables/lint');
@@ -67,16 +73,17 @@ export class VariableEditor extends React.Component {
       autoCloseBrackets: true,
       matchBrackets: true,
       showCursorWhenSelecting: true,
+      readOnly: this.props.readOnly ? 'nocursor' : false,
       foldGutter: {
-        minFoldSize: 4
+        minFoldSize: 4,
       },
       lint: {
-        variableToType: this.props.variableToType
+        variableToType: this.props.variableToType,
       },
       hintOptions: {
-        variableToType: this.props.variableToType
+        variableToType: this.props.variableToType,
       },
-      gutters: [ 'CodeMirror-linenumbers', 'CodeMirror-foldgutter' ],
+      gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
       extraKeys: {
         'Cmd-Space': () => this.editor.showHint({ completeSingle: false }),
         'Ctrl-Space': () => this.editor.showHint({ completeSingle: false }),
@@ -94,12 +101,22 @@ export class VariableEditor extends React.Component {
           }
         },
 
+        'Shift-Ctrl-P': () => {
+          if (this.props.onPrettifyQuery) {
+            this.props.onPrettifyQuery();
+          }
+        },
+
+        // Persistent search box in Query Editor
+        'Cmd-F': 'findPersistent',
+        'Ctrl-F': 'findPersistent',
+
         // Editor improvements
         'Ctrl-Left': 'goSubwordLeft',
         'Ctrl-Right': 'goSubwordRight',
         'Alt-Left': 'goGroupLeft',
         'Alt-Right': 'goGroupRight',
-      }
+      },
     });
 
     this.editor.on('change', this._onEdit);
@@ -116,12 +133,13 @@ export class VariableEditor extends React.Component {
     this.ignoreChangeEvent = true;
     if (this.props.variableToType !== prevProps.variableToType) {
       this.editor.options.lint.variableToType = this.props.variableToType;
-      this.editor.options.hintOptions.variableToType =
-        this.props.variableToType;
+      this.editor.options.hintOptions.variableToType = this.props.variableToType;
       CodeMirror.signal(this.editor, 'change', this.editor);
     }
-    if (this.props.value !== prevProps.value &&
-        this.props.value !== this.cachedValue) {
+    if (
+      this.props.value !== prevProps.value &&
+      this.props.value !== this.cachedValue
+    ) {
       this.cachedValue = this.props.value;
       this.editor.setValue(this.props.value);
     }
@@ -139,7 +157,9 @@ export class VariableEditor extends React.Component {
     return (
       <div
         className="codemirrorWrap"
-        ref={node => { this._node = node; }}
+        ref={node => {
+          this._node = node;
+        }}
       />
     );
   }
@@ -169,7 +189,7 @@ export class VariableEditor extends React.Component {
     ) {
       this.editor.execCommand('autocomplete');
     }
-  }
+  };
 
   _onEdit = () => {
     if (!this.ignoreChangeEvent) {
@@ -178,9 +198,9 @@ export class VariableEditor extends React.Component {
         this.props.onEdit(this.cachedValue);
       }
     }
-  }
+  };
 
   _onHasCompletion = (cm, data) => {
     onHasCompletion(cm, data, this.props.onHintInformationRender);
-  }
+  };
 }

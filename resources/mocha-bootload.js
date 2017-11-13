@@ -7,26 +7,26 @@
  *  LICENSE file in the root directory of this source tree.
  */
 
-var jsdom = require('jsdom');
+var JSDOM = require('jsdom').JSDOM;
 
 // setup the simplest document possible
-var doc = jsdom.jsdom('<!doctype html><html><body></body></html>');
+var doc = new JSDOM('<!doctype html><html><body></body></html>');
 
 // get the window object out of the document
-var win = doc.defaultView;
+var win = doc.window;
 
 // set globals for mocha that make access to document and window feel
 // natural in the test environment
-global.document = doc;
+global.document = win.document;
 global.window = win;
 
-global.document.createRange = function () {
+global.document.createRange = function() {
   return {
-    setEnd: function () {},
-    setStart: function () {},
-    getBoundingClientRect: function () {
+    setEnd: function() {},
+    setStart: function() {},
+    getBoundingClientRect: function() {
       return { right: 0 };
-    }
+    },
   };
 };
 
@@ -53,7 +53,7 @@ var chai = require('chai');
 var chaiSubset = require('chai-subset');
 chai.use(chaiSubset);
 
-process.on('unhandledRejection', function (error) {
+process.on('unhandledRejection', function(error) {
   console.error('Unhandled Promise Rejection:');
-  console.error(error && error.stack || error);
+  console.error((error && error.stack) || error);
 });
